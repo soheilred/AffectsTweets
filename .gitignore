@@ -1,0 +1,6 @@
+# Files and directories listed here are excluded from git:
+.DS_Store
+target/
+index-directory/
+.idea/
+*.iml
