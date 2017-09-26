@@ -1,11 +1,8 @@
 package edu.unh.cs.ir.pa2;
 
 import co.nstant.in.cbor.CborException;
-import edu.unh.cs.ir.toolset.SearchEngine;
 import edu.unh.cs.treccar.Data;
 import edu.unh.cs.treccar.read_data.DeserializeData;
-import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.TopDocs;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -54,12 +51,12 @@ public class Eval {
 
             System.out.println("performSearch");
             try {
-                SearchEngine se = new SearchEngine();
+                /*SearchEngine se = new SearchEngine();
                 TopDocs topDocs = se.performSearch(keyWordQuery, 100);
 
                 System.out.println("Results found: " + topDocs.totalHits);
                 ScoreDoc[] hits = topDocs.scoreDocs;
-
+*/
             } catch (Exception e) {
                 e.printStackTrace();
             }

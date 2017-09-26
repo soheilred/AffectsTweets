@@ -34,7 +34,7 @@ import java.util.ArrayList;
 public class Indexer {
 
     /**
-     * Creates a new instance of Indexer
+     * Creates a new instance of Indexer1
      */
     public Indexer(String url1) {
     	url=url1;

@@ -27,13 +27,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 
-/**
- * @author John
- */
+
 public class Indexer2 {
 
     /**
-     * Creates a new instance of Indexer
+     * Creates a new instance of Indexer1
      */
     public Indexer2() {
     }
