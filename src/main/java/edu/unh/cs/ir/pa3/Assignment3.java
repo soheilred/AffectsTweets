@@ -57,7 +57,7 @@ public class Assignment3 {
 
 
             // perform search on the query
-            // and retrieve the top 10 result
+            // and retrieve the top 100 result
             System.out.println("\n--------------\nPerformSearch:");
             IndexSearcher3 se = new IndexSearcher3(false);
 
