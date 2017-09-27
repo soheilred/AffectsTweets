@@ -28,8 +28,9 @@ public class Indexer3 {
     private IndexWriter indexWriter;
 
     private IndexWriter getIndexWriter() throws IOException {
+
         if (indexWriter == null) {
-            Directory indexDir = FSDirectory.open(new File("index-directory").toPath());
+            Directory indexDir = FSDirectory.open(new File("index-directory3").toPath());
             IndexWriterConfig config = new IndexWriterConfig(new StandardAnalyzer());
             indexWriter = new IndexWriter(indexDir, config);
         }
@@ -37,14 +38,17 @@ public class Indexer3 {
     }
 
     public void rebuildIndexes(FileInputStream fileInputStream) throws IOException, CborException {
-        for (Data.Page page : DeserializeData.iterableAnnotations(fileInputStream)) {
+        for (Data.Paragraph paragraph : DeserializeData.iterableParagraphs(fileInputStream)) {
             // Index all Accommodation entries
             IndexWriter writer = getIndexWriter();
             Document doc = new Document();
-            doc.add(new StringField("id", page.getPageId(), Field.Store.YES));
-            doc.add(new TextField("name", page.getPageName(), Field.Store.YES));
-            writer.updateDocument(new Term("id",page.getPageId()),doc);
+            doc.add(new StringField("id", paragraph.getParaId(), Field.Store.YES));
+            doc.add(new TextField("content", paragraph.getTextOnly(), Field.Store.YES));
+//            System.out.println(doc.toString());
+
+            writer.updateDocument(new Term("id",paragraph.getParaId()),doc);
         }
+        System.out.print(indexWriter.numDocs());
 
         if (indexWriter != null) {
             indexWriter.close();

@@ -27,157 +27,160 @@ public class IndexSearcher3 {
      * Creates a new instance of IndexSearcher1
      */
     public IndexSearcher3(int type) throws IOException {
-        searcher = new IndexSearcher(DirectoryReader.open(FSDirectory.open(new File("index-directory").toPath())));
-        if (type == 1) {
-            TFIDFSimilarity myTFIDF = new TFIDFSimilarity() {
-                float sumSW;
-                @Override
-                public float coord(int overlap, int maxOverlap) {
-                    return 0;
-                }
+        searcher = new IndexSearcher(DirectoryReader.open(FSDirectory.open(new File("index-directory3").toPath())));
+        switch (type) {
+            case (1):
+                searcher.setSimilarity(new TFIDFSimilarity() {
 
-                @Override
-                public float queryNorm(float sumOfSquaredWeights) {
-                    sumSW = sumOfSquaredWeights;
-                    return 0;
-                }
+                    float sumSW;
 
-                @Override
-                public float tf(float freq) {
-                    double d = freq;
-                    float mytf = (float)(1 + Math.log(d))/sumSW;
-                    return mytf;
-                }
+                    @Override
+                    public float coord(int overlap, int maxOverlap) {
+                        return 0;
+                    }
 
-                @Override
-                public float idf(long docFreq, long docCount) {
-                    float myidf = (float)(1 + Math.log(docCount/docFreq));
-                    return myidf;
-                }
+                    @Override
+                    public float queryNorm(float sumOfSquaredWeights) {
+                        sumSW = sumOfSquaredWeights;
+                        return 0;
+                    }
 
-                @Override
-                public float lengthNorm(FieldInvertState state) {
-                    return 0;
-                }
+                    @Override
+                    public float tf(float freq) {
+                        return (float) (1 + Math.log(freq)) / sumSW;
+                    }
 
-                @Override
-                public float decodeNormValue(long norm) {
-                    return 0;
-                }
+                    @Override
+                    public float idf(long docFreq, long docCount) {
+                        return (float) (1 + Math.log(docCount / docFreq));
+                    }
 
-                @Override
-                public long encodeNormValue(float f) {
-                    return 0;
-                }
+                    @Override
+                    public float lengthNorm(FieldInvertState state) {
+                        return 0;
+                    }
 
-                @Override
-                public float sloppyFreq(int distance) {
-                    return 0;
-                }
+                    @Override
+                    public float decodeNormValue(long norm) {
+                        return 0;
+                    }
 
-                @Override
-                public float scorePayload(int doc, int start, int end, BytesRef payload) {
-                    return 0;
-                }
-            };
-        }else if(type == 2) {
-            TFIDFSimilarity myTFIDF = new TFIDFSimilarity() {
-                @Override
-                public float coord(int overlap, int maxOverlap) {
-                    return 0;
-                }
+                    @Override
+                    public long encodeNormValue(float f) {
+                        return 0;
+                    }
 
-                @Override
-                public float queryNorm(float sumOfSquaredWeights) {
-                    return 0;
-                }
+                    @Override
+                    public float sloppyFreq(int distance) {
+                        return 0;
+                    }
 
-                @Override
-                public float tf(float freq) {
-                    return 0;
-                }
+                    @Override
+                    public float scorePayload(int doc, int start, int end, BytesRef payload) {
+                        return 0;
+                    }
+                });
+                break;
+            case (2):
+                searcher.setSimilarity(new TFIDFSimilarity() {
+                    @Override
+                    public float coord(int overlap, int maxOverlap) {
+                        return 0;
+                    }
 
-                @Override
-                public float idf(long docFreq, long docCount) {
-                    return 0;
-                }
+                    @Override
+                    public float queryNorm(float sumOfSquaredWeights) {
+                        return 0;
+                    }
 
-                @Override
-                public float lengthNorm(FieldInvertState state) {
-                    return 0;
-                }
+                    @Override
+                    public float tf(float freq) {
+                        return 0;
+                    }
 
-                @Override
-                public float decodeNormValue(long norm) {
-                    return 0;
-                }
+                    @Override
+                    public float idf(long docFreq, long docCount) {
+                        return 0;
+                    }
 
-                @Override
-                public long encodeNormValue(float f) {
-                    return 0;
-                }
+                    @Override
+                    public float lengthNorm(FieldInvertState state) {
+                        return 0;
+                    }
 
-                @Override
-                public float sloppyFreq(int distance) {
-                    return 0;
-                }
+                    @Override
+                    public float decodeNormValue(long norm) {
+                        return 0;
+                    }
 
-                @Override
-                public float scorePayload(int doc, int start, int end, BytesRef payload) {
-                    return 0;
-                }
-            };
+                    @Override
+                    public long encodeNormValue(float f) {
+                        return 0;
+                    }
 
-        }else if(type == 3) {
-            TFIDFSimilarity myTFIDF = new TFIDFSimilarity() {
-                @Override
-                public float coord(int overlap, int maxOverlap) {
-                    return 0;
-                }
+                    @Override
+                    public float sloppyFreq(int distance) {
+                        return 0;
+                    }
 
-                @Override
-                public float queryNorm(float sumOfSquaredWeights) {
-                    return 0;
-                }
+                    @Override
+                    public float scorePayload(int doc, int start, int end, BytesRef payload) {
+                        return 0;
+                    }
+                });
+                break;
+            case (3):
+                searcher.setSimilarity(new TFIDFSimilarity() {
+                    @Override
+                    public float coord(int overlap, int maxOverlap) {
+                        return 0;
+                    }
 
-                @Override
-                public float tf(float freq) {
-                    return 0;
-                }
+                    @Override
+                    public float queryNorm(float sumOfSquaredWeights) {
+                        return 0;
+                    }
 
-                @Override
-                public float idf(long docFreq, long docCount) {
-                    return 0;
-                }
+                    @Override
+                    public float tf(float freq) {
+                        return 0;
+                    }
 
-                @Override
-                public float lengthNorm(FieldInvertState state) {
-                    return 0;
-                }
+                    @Override
+                    public float idf(long docFreq, long docCount) {
+                        return 0;
+                    }
 
-                @Override
-                public float decodeNormValue(long norm) {
-                    return 0;
-                }
+                    @Override
+                    public float lengthNorm(FieldInvertState state) {
+                        return 0;
+                    }
 
-                @Override
-                public long encodeNormValue(float f) {
-                    return 0;
-                }
+                    @Override
+                    public float decodeNormValue(long norm) {
+                        return 0;
+                    }
 
-                @Override
-                public float sloppyFreq(int distance) {
-                    return 0;
-                }
+                    @Override
+                    public long encodeNormValue(float f) {
+                        return 0;
+                    }
 
-                @Override
-                public float scorePayload(int doc, int start, int end, BytesRef payload) {
-                    return 0;
-                }
-            };
+                    @Override
+                    public float sloppyFreq(int distance) {
+                        return 0;
+                    }
 
+                    @Override
+                    public float scorePayload(int doc, int start, int end, BytesRef payload) {
+                        return 0;
+                    }
+                });
+                break;
+            default:
+                break;
         }
-        parser = new QueryParser("name", new StandardAnalyzer());
+        parser = new QueryParser("content", new StandardAnalyzer());
     }
 
     public TopDocs performSearch(String queryString, int n)

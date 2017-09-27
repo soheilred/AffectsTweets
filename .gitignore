@@ -2,5 +2,7 @@
 .DS_Store
 target/
 index-directory/
+index-directory2/
+index-directory3/
 .idea/
 *.iml
