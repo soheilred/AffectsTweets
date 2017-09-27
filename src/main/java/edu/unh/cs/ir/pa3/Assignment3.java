@@ -1,26 +1,43 @@
 package edu.unh.cs.ir.pa3;
 
-//train.test200.cbor.outlines
-
 import co.nstant.in.cbor.CborException;
-import edu.unh.cs.ir.pa3.IndexSearcher3;
-import edu.unh.cs.ir.pa3.Indexer3;
+import edu.unh.cs.treccar.Data;
+import edu.unh.cs.treccar.read_data.DeserializeData;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Assignment3 {
 
-
-
-
     public static void main(String[] args) throws FileNotFoundException, CborException {
+
+        Map<String, String> queriesMap = new HashMap<>();
+        List<String> qIdList = new ArrayList<>();
+
         try {
             System.setProperty("file.encoding", "UTF-8");
             File file = new File("./test200/train.test200.cbor.paragraphs");
             final FileInputStream fileInputStream = new FileInputStream(file);
+
+            System.out.println("RebuildIndexes");
+            Indexer3 indexer3 = new Indexer3();
+            indexer3.rebuildIndexes(fileInputStream);
+            System.out.println("RebuildIndexes done");
+
+            for (Data.Page page : DeserializeData.iterableAnnotations(fileInputStream)) {
+                queriesMap.put(page.getPageId(), page.getPageName());
+                qIdList.add(page.getPageId());
+            }
+
+            for (String id : qIdList) {
+                queriesMap.get(id);
+            }
 
             // making the run file
             FileWriter f1 = new FileWriter("run_file");
@@ -28,18 +45,7 @@ public class Assignment3 {
             String resultString = null;
 
 
-            // build a lucene index to retrieve page ids
-            System.out.println("RebuildIndexes");
-            Indexer3 indexer_1 = new Indexer3();
-            indexer_1.rebuildIndexes(fileInputStream);
-            System.out.println("RebuildIndexes done");
 
-
-            // build a lucene index to retrieve paragraphs
-            System.out.println("RebuildIndexes");
-            Indexer3 indexer_2 = new Indexer3();
-            indexer_2.rebuildIndexes(fileInputStream);
-            System.out.println("RebuildIndexes done");
 
 
             // perform search on the query
@@ -55,13 +61,13 @@ public class Assignment3 {
 
                 for (ScoreDoc scoreDoc : hits) {
                     Document doc = se.getDocument(scoreDoc.doc);
-                    resultString = indexer_1.nid.get(i).id + " Q0 " +doc.get("id")
+                    resultString = indexer_1.nid.get(i).id + " Q0 " + doc.get("id")
                             //+ " " + doc.get("content")
                             + " " + ++rank
                             + " " + scoreDoc.score + ""
                             + " Team3 Practical";
                     System.out.println(resultString);
-                    bw.write(resultString+"\n");
+                    bw.write(resultString + "\n");
                 }
             }
 

@@ -39,7 +39,7 @@ public class IndexSearcher3 {
             };
             searcher.setSimilarity(similarityBase);
         }
-        parser = new QueryParser("content", new StandardAnalyzer());
+        parser = new QueryParser("name", new StandardAnalyzer());
     }
 
     public TopDocs performSearch(String queryString, int n)
