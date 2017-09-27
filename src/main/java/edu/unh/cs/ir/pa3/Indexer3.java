@@ -8,6 +8,7 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
+import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.Term;
@@ -37,6 +38,13 @@ public class Indexer3 {
         return indexWriter;
     }
 
+    /*private IndexReader indexReader;
+
+    private IndexReader getIndexReader() throws IOException {
+        return indexReader;
+
+    }*/
+
     public void rebuildIndexes(FileInputStream fileInputStream) throws IOException, CborException {
         for (Data.Paragraph paragraph : DeserializeData.iterableParagraphs(fileInputStream)) {
             // Index all Accommodation entries
@@ -46,7 +54,7 @@ public class Indexer3 {
             doc.add(new TextField("content", paragraph.getTextOnly(), Field.Store.YES));
 //            System.out.println(doc.toString());
 
-            writer.updateDocument(new Term("id",paragraph.getParaId()),doc);
+            writer.updateDocument(new Term("id", paragraph.getParaId()), doc);
         }
         System.out.print(indexWriter.numDocs());
 

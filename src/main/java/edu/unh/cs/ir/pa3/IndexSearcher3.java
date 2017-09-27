@@ -10,6 +10,7 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.search.similarities.BasicStats;
+import org.apache.lucene.search.similarities.Similarity;
 import org.apache.lucene.search.similarities.SimilarityBase;
 import org.apache.lucene.search.similarities.TFIDFSimilarity;
 import org.apache.lucene.store.FSDirectory;
@@ -29,9 +30,8 @@ public class IndexSearcher3 {
     public IndexSearcher3(int type) throws IOException {
         searcher = new IndexSearcher(DirectoryReader.open(FSDirectory.open(new File("index-directory3").toPath())));
         switch (type) {
-            case (1):
-                searcher.setSimilarity(new TFIDFSimilarity() {
-
+            case (1): {
+                Similarity s_lnc_ltn = new TFIDFSimilarity() {
                     float sumSW;
 
                     @Override
@@ -79,10 +79,13 @@ public class IndexSearcher3 {
                     public float scorePayload(int doc, int start, int end, BytesRef payload) {
                         return 0;
                     }
-                });
+                };
+                searcher.setSimilarity(s_lnc_ltn);
                 break;
-            case (2):
-                searcher.setSimilarity(new TFIDFSimilarity() {
+            }
+            case (2): {
+                Similarity s_bnn_bnn = new TFIDFSimilarity() {
+
                     @Override
                     public float coord(int overlap, int maxOverlap) {
                         return 0;
@@ -95,12 +98,12 @@ public class IndexSearcher3 {
 
                     @Override
                     public float tf(float freq) {
-                        return 0;
+                        return freq == 0 ? 0 : 1;
                     }
 
                     @Override
                     public float idf(long docFreq, long docCount) {
-                        return 0;
+                        return docFreq == 0 ? 0 : 1;
                     }
 
                     @Override
@@ -127,10 +130,14 @@ public class IndexSearcher3 {
                     public float scorePayload(int doc, int start, int end, BytesRef payload) {
                         return 0;
                     }
-                });
+                };
+                searcher.setSimilarity(s_bnn_bnn);
                 break;
-            case (3):
-                searcher.setSimilarity(new TFIDFSimilarity() {
+            }
+            case (3): {
+                Similarity s_anc_apc = new TFIDFSimilarity() {
+
+
                     @Override
                     public float coord(int overlap, int maxOverlap) {
                         return 0;
@@ -143,12 +150,12 @@ public class IndexSearcher3 {
 
                     @Override
                     public float tf(float freq) {
-                        return 0;
+                        return freq == 0 ? 0 : 1;
                     }
 
                     @Override
                     public float idf(long docFreq, long docCount) {
-                        return 0;
+                        return docFreq == 0 ? 0 : 1;
                     }
 
                     @Override
@@ -175,11 +182,14 @@ public class IndexSearcher3 {
                     public float scorePayload(int doc, int start, int end, BytesRef payload) {
                         return 0;
                     }
-                });
+                };
+                searcher.setSimilarity(s_anc_apc);
                 break;
+            }
             default:
                 break;
         }
+
         parser = new QueryParser("content", new StandardAnalyzer());
     }
 
