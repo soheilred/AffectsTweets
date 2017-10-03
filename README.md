@@ -1,20 +1,20 @@
 # InfoRet
 #### Project repo for CS825 Team 3 ####
 
-###Requirements
+### Requirements
 * Java 1.8+
 * Maven
 
-###Installation
+### Installation
 You have two options:
 
-#####1. Run the prebuilt jar files (for results test purpose)
+##### 1. Run the prebuilt jar files (for results test purpose)
 Edit the following and run it in CLI according to the assignment number and version:
 ```
 java -jar outputs/PAx-vx.x.x.jar 
 ```
  
-#####2. Build by maven then run the jar files on your own
+##### 2. Build by maven then run the jar files on your own
 There is an `<mainClass>edu.unh.cs.ir.paX.AssignmentX</mainClass>` tag in `pom.xml`which `X` is the number of the assignment located at `src`.
  Change that line into the desired assignment number then build the project by maven:
 ``` 
