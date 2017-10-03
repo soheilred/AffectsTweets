@@ -13,4 +13,4 @@ Run the command in root:
 
 **How to run:**
 
-`java -jar target/Assignment3`
+`java -jar AssignmentX`
