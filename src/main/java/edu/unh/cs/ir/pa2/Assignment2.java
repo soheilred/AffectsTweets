@@ -1,4 +1,4 @@
-package edu.unh.cs.ir.pa3;
+package edu.unh.cs.ir.pa2;
 
 import co.nstant.in.cbor.CborException;
 import edu.unh.cs.ir.pa3.IndexSearcher3;
@@ -6,11 +6,6 @@ import edu.unh.cs.ir.pa3.Indexer3;
 import edu.unh.cs.treccar.Data;
 import edu.unh.cs.treccar.read_data.DeserializeData;
 import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
-import org.apache.lucene.document.StringField;
-import org.apache.lucene.document.TextField;
-import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.Term;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 
@@ -20,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Assignment3 {
+public class Assignment2 {
 
 
     public static void main(String[] args) throws FileNotFoundException, CborException {
@@ -30,7 +25,7 @@ public class Assignment3 {
             // make the run file
             FileWriter f1 = new FileWriter("run_file");
             BufferedWriter bw = new BufferedWriter(f1);
-            String resultString = null;
+            String resultString;
 
             // read the queries' file
             System.setProperty("file.encoding", "UTF-8");
@@ -44,14 +39,14 @@ public class Assignment3 {
 
             // build a lucene index to retrieve paragraphs
             System.out.println("RebuildIndexes");
-            Indexer3 indexer_3 = new Indexer3();
-            indexer_3.rebuildIndexes(fileInputStream1);
+            Indexer2 indexer = new Indexer2();
+            indexer.rebuildIndexes(fileInputStream1);
             System.out.println("RebuildIndexes done");
 
             // perform search on the query
             // and retrieve the top 100 result
             System.out.println("\n--------------\nPerformSearch:");
-            IndexSearcher3 se = new IndexSearcher3(0);
+            IndexSearcher2 se = new IndexSearcher2(false);
 
             for (Data.Page page : DeserializeData.iterableAnnotations(fileInputStream)) {
                 // Index all Accommodation entries
