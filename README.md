@@ -1,7 +1,16 @@
 # InfoRet
 #### Project repo for CS825 Team 3 ####
+**Requirements:**
+Java 1.8 or more
+Maven 2.3
 
-You can easlily run the project using Maven as a build automation tool. There is an `AssignmentX.java` class file for each assignment which `X` is pointing to the specific assignment number. Run the assignment using the corresponded `AssignmentX.java` class file.
+**How to built:**
+Download all files from the git repo.
+There is an `AssignmentX.java` class file for each assignment which `X` is the number of each assignment. Run the assignment using the corresponded `AssignmentX.java` class file.
 
-### Requirements ###
-Java version 8
+Run the command in root:
+`mvn package`
+
+**How to run:**
+
+`java -jar target/Assignment3`
