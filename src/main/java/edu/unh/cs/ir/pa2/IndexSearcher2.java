@@ -28,7 +28,7 @@ public class IndexSearcher2 {
             SimilarityBase similarityBase = new SimilarityBase() {
                 @Override
                 protected float score(BasicStats stats, float freq, float docLen) {
-                    return stats.getTotalTermFreq();
+                    return stats.getDocFreq();
                 }
 
                 @Override
