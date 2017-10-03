@@ -2,7 +2,6 @@
 .DS_Store
 target/
 index-directory*/
-Report*.pdf
-run_file*
+results/
 .idea/
 *.iml
