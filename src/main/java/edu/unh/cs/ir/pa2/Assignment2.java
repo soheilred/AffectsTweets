@@ -24,9 +24,9 @@ public class Assignment2 {
 
         try {
             // make the run file:
-            // run_file_default
-            // run_file_custom
-            BufferedWriter bW = new BufferedWriter(new FileWriter("run_file_default"));
+            // run_file_default2
+            // run_file_custom2
+            BufferedWriter bW = new BufferedWriter(new FileWriter("run_file_default2"));
             String resultString;
 
             // read the queries' file
@@ -54,27 +54,26 @@ public class Assignment2 {
                 // Index all Accommodation entries
                 queriesMap.put(page.getPageId(), page.getPageName());
                 qIdList.add(page.getPageId());
-                for (String id : qIdList) {
-                    String query = queriesMap.get(id);
-                    System.out.println("\nThe query is: " + query);
-                    TopDocs topDocs = se.performSearch(query, 100);
+            }
+            for (String id : qIdList) {
+                String query = queriesMap.get(id);
+                System.out.println("\nThe query is: " + query);
+                TopDocs topDocs = se.performSearch(query, 100);
 
-                    System.out.println("Top " + 100 + " results found: " + topDocs.totalHits);
-                    ScoreDoc[] hits = topDocs.scoreDocs;
+                System.out.println("Top " + 100 + " results found: " + topDocs.totalHits);
+                ScoreDoc[] hits = topDocs.scoreDocs;
 
-                    int rank = 0;
-                    for (ScoreDoc scoreDoc : hits) {
-                        Document doc = se.getDocument(scoreDoc.doc);
-                        resultString = id + " Q0 " + doc.get("id")
-                                //+ " " + doc.get("content")
-                                + " " + ++rank
-                                + " " + scoreDoc.score + ""
-                                + " Team3-Practical";
-                        bW.write(resultString);
-                        bW.newLine();
-//                        System.out.println(resultString);
-                    }
-//                    bW.flush();
+                int rank = 0;
+                for (ScoreDoc scoreDoc : hits) {
+                    Document doc = se.getDocument(scoreDoc.doc);
+                    resultString = id + " Q0 " + doc.get("id")
+                            //+ " " + doc.get("content")
+                            + " " + ++rank
+                            + " " + scoreDoc.score + ""
+                            + " Team3-Practical";
+                    bW.write(resultString);
+                    bW.newLine();
+                        System.out.println(resultString);
                 }
             }
             bW.close();

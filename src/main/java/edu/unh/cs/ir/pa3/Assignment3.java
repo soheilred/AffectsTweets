@@ -69,10 +69,9 @@ public class Assignment3 {
                     for (ScoreDoc scoreDoc : hits) {
                         Document doc = se.getDocument(scoreDoc.doc);
                         resultString = id + " Q0 " + doc.get("id")
-                                //+ " " + doc.get("content")
                                 + " " + ++rank
                                 + " " + scoreDoc.score + ""
-                                + " Team3 Practical";
+                                + " Team3-Practical";
                         System.out.println(resultString);
                         bw.write(resultString + "\n");
                     }
