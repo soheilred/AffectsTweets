@@ -31,7 +31,7 @@ public class Indexer2 {
 
     private IndexWriter getIndexWriter() throws IOException {
         if (indexWriter == null) {
-            Directory indexDir = FSDirectory.open(new File("index-directory").toPath());
+            Directory indexDir = FSDirectory.open(new File("index-directory2").toPath());
             IndexWriterConfig config = new IndexWriterConfig(new StandardAnalyzer());
             indexWriter = new IndexWriter(indexDir, config);
         }

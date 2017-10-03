@@ -1,8 +1,8 @@
 # Files and directories listed here are excluded from git:
 .DS_Store
 target/
-index-directory/
-index-directory2/
-index-directory3/
+index-directory*/
+Report*.pdf
+run_file*
 .idea/
 *.iml

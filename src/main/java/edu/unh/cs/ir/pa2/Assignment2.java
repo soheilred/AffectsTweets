@@ -21,26 +21,28 @@ public class Assignment2 {
     public static void main(String[] args) throws FileNotFoundException, CborException {
         Map<String, String> queriesMap = new HashMap<>();
         List<String> qIdList = new ArrayList<>();
+
         try {
-            // make the run file
-            FileWriter f1 = new FileWriter("run_file");
-            BufferedWriter bw = new BufferedWriter(f1);
+            // make the run file:
+            // run_file_default
+            // run_file_custom
+            BufferedWriter bW = new BufferedWriter(new FileWriter("run_file_default"));
             String resultString;
 
             // read the queries' file
             System.setProperty("file.encoding", "UTF-8");
-            File file = new File("./test200/train.test200.cbor.outlines");
-            final FileInputStream fileInputStream = new FileInputStream(file);
+            File fOutlines = new File("./test200/train.test200.cbor.outlines");
+            final FileInputStream FISOutlines = new FileInputStream(fOutlines);
 
             // read the paragraphs' file
             System.setProperty("file.encoding", "UTF-8");
-            File file1 = new File("./test200/train.test200.cbor.paragraphs");
-            final FileInputStream fileInputStream1 = new FileInputStream(file1);
+            File fParags = new File("./test200/train.test200.cbor.paragraphs");
+            final FileInputStream fISParags = new FileInputStream(fParags);
 
             // build a lucene index to retrieve paragraphs
             System.out.println("RebuildIndexes");
             Indexer2 indexer = new Indexer2();
-            indexer.rebuildIndexes(fileInputStream1);
+            indexer.rebuildIndexes(fISParags);
             System.out.println("RebuildIndexes done");
 
             // perform search on the query
@@ -48,7 +50,7 @@ public class Assignment2 {
             System.out.println("\n--------------\nPerformSearch:");
             IndexSearcher2 se = new IndexSearcher2(false);
 
-            for (Data.Page page : DeserializeData.iterableAnnotations(fileInputStream)) {
+            for (Data.Page page : DeserializeData.iterableAnnotations(FISOutlines)) {
                 // Index all Accommodation entries
                 queriesMap.put(page.getPageId(), page.getPageName());
                 qIdList.add(page.getPageId());
@@ -67,12 +69,15 @@ public class Assignment2 {
                                 //+ " " + doc.get("content")
                                 + " " + ++rank
                                 + " " + scoreDoc.score + ""
-                                + " Team3 Practical";
-                        System.out.println(resultString);
-                        bw.write(resultString + "\n");
+                                + " Team3-Practical";
+                        bW.write(resultString);
+                        bW.newLine();
+//                        System.out.println(resultString);
                     }
+//                    bW.flush();
                 }
             }
+            bW.close();
         } catch (Exception e) {
             System.out.println("Exception caught.\n");
         }

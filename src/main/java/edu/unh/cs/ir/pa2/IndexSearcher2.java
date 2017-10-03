@@ -23,7 +23,7 @@ public class IndexSearcher2 {
      * Creates a new instance of IndexSearcher1
      */
     public IndexSearcher2(boolean custom) throws IOException {
-        searcher = new IndexSearcher(DirectoryReader.open(FSDirectory.open(new File("index-directory").toPath())));
+        searcher = new IndexSearcher(DirectoryReader.open(FSDirectory.open(new File("index-directory2").toPath())));
         if (custom) {
             SimilarityBase similarityBase = new SimilarityBase() {
                 @Override
