@@ -25,7 +25,7 @@ public class Assignment2 {
             // make the run file:
             // run_file_default2
             // run_file_custom2
-            BufferedWriter bW = new BufferedWriter(new FileWriter("results/run_file_default2"));
+            BufferedWriter bW = new BufferedWriter(new FileWriter("run_file_default2"));
             String resultString;
 
             // read the queries' file

@@ -2,6 +2,6 @@
 .DS_Store
 target/
 index-directory*/
-results/
 .idea/
+/run_file*
 *.iml
