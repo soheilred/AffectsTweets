@@ -17,6 +17,7 @@ import java.util.Map;
 
 public class Assignment2 {
 
+
     public static void main(String[] args) throws FileNotFoundException, CborException {
         Map<String, String> queriesMap = new HashMap<>();
         List<String> qIdList = new ArrayList<>();
