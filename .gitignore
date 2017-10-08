@@ -3,5 +3,6 @@
 target/
 index-directory*/
 .idea/
+results/
 /run_file*
 *.iml
