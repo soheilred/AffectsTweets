@@ -28,14 +28,13 @@ public class Assignment3 {
         List<String> qIdList = new ArrayList<>();
         try {
             // make the run file
-            FileWriter f1 = new FileWriter("run_file");
-            BufferedWriter bw = new BufferedWriter(f1);
-            String resultString = null;
+            BufferedWriter bW = new BufferedWriter(new FileWriter("run_file"));
+            String resultString;
 
             // read the queries' file
             System.setProperty("file.encoding", "UTF-8");
-            File file = new File("./test200/train.test200.cbor.outlines");
-            final FileInputStream fileInputStream = new FileInputStream(file);
+            File fOutlines = new File("./test200/train.test200.cbor.outlines");
+            final FileInputStream FISOutlines = new FileInputStream(fOutlines);
 
             // read the paragraphs' file
             System.setProperty("file.encoding", "UTF-8");
@@ -53,30 +52,33 @@ public class Assignment3 {
             System.out.println("\n--------------\nPerformSearch:");
             IndexSearcher3 se = new IndexSearcher3(0);
 
-            for (Data.Page page : DeserializeData.iterableAnnotations(fileInputStream)) {
+            for (Data.Page page : DeserializeData.iterableAnnotations(FISOutlines)) {
                 // Index all Accommodation entries
                 queriesMap.put(page.getPageId(), page.getPageName());
                 qIdList.add(page.getPageId());
-                for (String id : qIdList) {
-                    String query = queriesMap.get(id);
-                    System.out.println("\nThe query is: " + query);
-                    TopDocs topDocs = se.performSearch(query, 100);
+            }
+            for (String id : qIdList) {
+                String query = queriesMap.get(id);
+                System.out.println("\nThe query is: " + query);
+                TopDocs topDocs = se.performSearch(query, 100);
 
-                    System.out.println("Top " + 100 + " results found: " + topDocs.totalHits);
-                    ScoreDoc[] hits = topDocs.scoreDocs;
+                System.out.println("Top " + 100 + " results found: " + topDocs.totalHits);
+                ScoreDoc[] hits = topDocs.scoreDocs;
 
-                    int rank = 0;
-                    for (ScoreDoc scoreDoc : hits) {
-                        Document doc = se.getDocument(scoreDoc.doc);
-                        resultString = id + " Q0 " + doc.get("id")
-                                + " " + ++rank
-                                + " " + scoreDoc.score + ""
-                                + " Team3-Practical";
-                        System.out.println(resultString);
-                        bw.write(resultString + "\n");
-                    }
+                int rank = 0;
+                for (ScoreDoc scoreDoc : hits) {
+                    Document doc = se.getDocument(scoreDoc.doc);
+                    resultString = id + " Q0 " + doc.get("id")
+                            //+ " " + doc.get("content")
+                            + " " + ++rank
+                            + " " + scoreDoc.score + ""
+                            + " Team3-Practical";
+                    bW.write(resultString);
+                    bW.newLine();
+                    System.out.println(resultString);
                 }
             }
+            bW.close();
         } catch (Exception e) {
             System.out.println("Exception caught.\n");
         }
