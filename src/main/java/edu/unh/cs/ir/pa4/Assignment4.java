@@ -46,7 +46,7 @@ public class Assignment4 {
             // perform search on the query
             // and retrieve the top 100 result
             System.out.println("\n--------------\nPerformSearch:");
-            IndexSearcher4 se = new IndexSearcher4(false);
+            IndexSearcher4 se = new IndexSearcher4(0);
 
             for (Data.Page page : DeserializeData.iterableAnnotations(FISOutlines)) {
                 // Index all Accommodation entries
