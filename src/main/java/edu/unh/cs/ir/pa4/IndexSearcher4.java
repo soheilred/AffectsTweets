@@ -1,4 +1,4 @@
-package edu.unh.cs.ir.pa3;
+package edu.unh.cs.ir.pa4;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
@@ -20,7 +20,7 @@ public class IndexSearcher4 {
     private QueryParser parser = null;
 
     public IndexSearcher4(SimilarityBase similarity) throws IOException {
-        searcher = new IndexSearcher(DirectoryReader.open(FSDirectory.open(new File("index-directory3").toPath())));
+        searcher = new IndexSearcher(DirectoryReader.open(FSDirectory.open(new File("index-directory4").toPath())));
         if (similarity != null) {
             searcher.setSimilarity(similarity);
         }

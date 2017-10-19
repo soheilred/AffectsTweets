@@ -1,15 +1,12 @@
 package edu.unh.cs.ir.pa4;
 
 import co.nstant.in.cbor.CborException;
-import edu.unh.cs.ir.pa3.IndexSearcher4;
-import edu.unh.cs.ir.similarities.LNCSimilarity;
 import edu.unh.cs.treccar.Data;
 import edu.unh.cs.treccar.read_data.DeserializeData;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.search.similarities.LMDirichletSimilarity;
-import org.apache.lucene.search.similarities.LMJelinekMercerSimilarity;
 
 import java.io.*;
 import java.util.ArrayList;
