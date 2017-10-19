@@ -4,6 +4,7 @@ import co.nstant.in.cbor.CborException;
 import edu.unh.cs.ir.pa3.IndexSearcher3;
 import edu.unh.cs.ir.pa3.Indexer3;
 import edu.unh.cs.ir.similarities.LNCSimilarity;
+import edu.unh.cs.ir.similarities.LTNSimilarity;
 import edu.unh.cs.treccar.Data;
 import edu.unh.cs.treccar.read_data.DeserializeData;
 import org.apache.lucene.document.Document;
@@ -22,8 +23,6 @@ import java.util.List;
 import java.util.Map;
 
 public class Assignment3 {
-
-    private enum variants {lnc_ltn, bnn_bnn, anc_apc}
 
 
     public static void main(String[] args) throws FileNotFoundException, CborException {
@@ -54,7 +53,7 @@ public class Assignment3 {
             // perform search on the query
             // and retrieve the top 100 result
             System.out.println("\n--------------\nPerformSearch:");
-            IndexSearcher3 se = new IndexSearcher3(0);
+            IndexSearcher3 se = new IndexSearcher3(new LTNSimilarity());
 
             for (Data.Page page : DeserializeData.iterableAnnotations(fISOutlines)) {
                 // Index all Accommodation entries
