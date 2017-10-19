@@ -21,9 +21,6 @@ import java.io.IOException;
 
 public class Indexer4 {
 
-    /**
-     * Creates a new instance of Indexer1
-     */
     public Indexer4() {
     }
 

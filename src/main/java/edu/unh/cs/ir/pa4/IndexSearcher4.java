@@ -48,6 +48,7 @@ public class IndexSearcher4 {
 
                     @Override
                     protected float score(BasicStats stats, float freq, float docLen) {
+//                        stats
                         return 0;
                     }
                 });

@@ -1,6 +1,8 @@
 package edu.unh.cs.ir.pa3;
 
 import co.nstant.in.cbor.CborException;
+import com.sun.istack.internal.Nullable;
+import edu.unh.cs.ir.similarities.LNCSimilarity;
 import edu.unh.cs.treccar.Data;
 import edu.unh.cs.treccar.read_data.DeserializeData;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -8,10 +10,10 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
-import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.Term;
+import org.apache.lucene.search.similarities.SimilarityBase;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
@@ -20,35 +22,25 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 public class Indexer3 {
-    /**
-     * Creates a new instance of Indexer1
-     */
+
     public Indexer3() {
     }
 
     private IndexWriter indexWriter;
 
-    private IndexWriter getIndexWriter() throws IOException {
-
-        if (indexWriter == null) {
-            Directory indexDir = FSDirectory.open(new File("index-directory3").toPath());
-            IndexWriterConfig config = new IndexWriterConfig(new StandardAnalyzer());
-            indexWriter = new IndexWriter(indexDir, config);
-        }
-        return indexWriter;
-    }
-
-    /*private IndexReader indexReader;
-
-    private IndexReader getIndexReader() throws IOException {
-        return indexReader;
-
-    }*/
-
-    public void rebuildIndexes(FileInputStream fileInputStream) throws IOException, CborException {
+    public void buildIndexes(FileInputStream fileInputStream, SimilarityBase similarity) throws IOException, CborException {
         for (Data.Paragraph paragraph : DeserializeData.iterableParagraphs(fileInputStream)) {
             // Index all Accommodation entries
-            IndexWriter writer = getIndexWriter();
+            if (indexWriter == null) {
+                Directory indexDir = FSDirectory.open(new File("index-directory3").toPath());
+                IndexWriterConfig config = new IndexWriterConfig(new StandardAnalyzer());
+                if (similarity != null) {
+                    config.setSimilarity(similarity);
+                }
+                indexWriter = new IndexWriter(indexDir, config);
+            }
+            IndexWriter writer = indexWriter;
+
             Document doc = new Document();
             doc.add(new StringField("id", paragraph.getParaId(), Field.Store.YES));
             doc.add(new TextField("content", paragraph.getTextOnly(), Field.Store.YES));

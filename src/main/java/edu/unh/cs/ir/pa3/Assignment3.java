@@ -3,6 +3,7 @@ package edu.unh.cs.ir.pa3;
 import co.nstant.in.cbor.CborException;
 import edu.unh.cs.ir.pa3.IndexSearcher3;
 import edu.unh.cs.ir.pa3.Indexer3;
+import edu.unh.cs.ir.similarities.LNCSimilarity;
 import edu.unh.cs.treccar.Data;
 import edu.unh.cs.treccar.read_data.DeserializeData;
 import org.apache.lucene.document.Document;
@@ -22,10 +23,13 @@ import java.util.Map;
 
 public class Assignment3 {
 
+    private enum variants {lnc_ltn, bnn_bnn, anc_apc}
+
 
     public static void main(String[] args) throws FileNotFoundException, CborException {
         Map<String, String> queriesMap = new HashMap<>();
         List<String> qIdList = new ArrayList<>();
+
         try {
             // make the run file
             BufferedWriter bW = new BufferedWriter(new FileWriter("run_file"));
@@ -34,17 +38,17 @@ public class Assignment3 {
             // read the queries' file
             System.setProperty("file.encoding", "UTF-8");
             File fOutlines = new File("./test200/train.test200.cbor.outlines");
-            final FileInputStream FISOutlines = new FileInputStream(fOutlines);
+            final FileInputStream fISOutlines = new FileInputStream(fOutlines);
 
             // read the paragraphs' file
             System.setProperty("file.encoding", "UTF-8");
-            File file1 = new File("./test200/train.test200.cbor.paragraphs");
-            final FileInputStream fileInputStream1 = new FileInputStream(file1);
+            File fParags = new File("./test200/train.test200.cbor.paragraphs");
+            final FileInputStream fISParags = new FileInputStream(fParags);
 
             // build a lucene index to retrieve paragraphs
             System.out.println("RebuildIndexes");
-            Indexer3 indexer_3 = new Indexer3();
-            indexer_3.rebuildIndexes(fileInputStream1);
+            Indexer3 indexer = new Indexer3();
+            indexer.buildIndexes(fISParags, new LNCSimilarity()); //pass the specific similarity to indexer
             System.out.println("RebuildIndexes done");
 
             // perform search on the query
@@ -52,7 +56,7 @@ public class Assignment3 {
             System.out.println("\n--------------\nPerformSearch:");
             IndexSearcher3 se = new IndexSearcher3(0);
 
-            for (Data.Page page : DeserializeData.iterableAnnotations(FISOutlines)) {
+            for (Data.Page page : DeserializeData.iterableAnnotations(fISOutlines)) {
                 // Index all Accommodation entries
                 queriesMap.put(page.getPageId(), page.getPageName());
                 qIdList.add(page.getPageId());
