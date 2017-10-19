@@ -1,12 +1,15 @@
 package edu.unh.cs.ir.pa4;
 
 import co.nstant.in.cbor.CborException;
+import edu.unh.cs.ir.pa3.IndexSearcher4;
 import edu.unh.cs.ir.similarities.LNCSimilarity;
 import edu.unh.cs.treccar.Data;
 import edu.unh.cs.treccar.read_data.DeserializeData;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.search.similarities.LMDirichletSimilarity;
+import org.apache.lucene.search.similarities.LMJelinekMercerSimilarity;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -41,13 +44,16 @@ public class Assignment4 {
             // build a lucene index to retrieve paragraphs
             System.out.println("RebuildIndexes");
             Indexer4 indexer = new Indexer4();
-            indexer.buildIndexes(fISParags, new LNCSimilarity()); //pass the specific similarity to indexer
+            indexer.buildIndexes(fISParags, null); //pass the specific similarity to indexer
             System.out.println("RebuildIndexes done");
 
             // perform search on the query
             // and retrieve the top 100 result
             System.out.println("\n--------------\nPerformSearch:");
-            IndexSearcher4 se = new IndexSearcher4(0);
+
+            //new LMDirichletSimilarity(1000f)
+            //new LMJelinekMercerSimilarity(0.9f)
+            IndexSearcher4 se = new IndexSearcher4(new LMDirichletSimilarity(1000f)); //
 
             for (Data.Page page : DeserializeData.iterableAnnotations(FISOutlines)) {
                 // Index all Accommodation entries

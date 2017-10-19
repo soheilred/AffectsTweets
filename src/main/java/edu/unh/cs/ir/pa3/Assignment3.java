@@ -1,18 +1,11 @@
 package edu.unh.cs.ir.pa3;
 
 import co.nstant.in.cbor.CborException;
-import edu.unh.cs.ir.pa3.IndexSearcher3;
-import edu.unh.cs.ir.pa3.Indexer3;
 import edu.unh.cs.ir.similarities.LNCSimilarity;
 import edu.unh.cs.ir.similarities.LTNSimilarity;
 import edu.unh.cs.treccar.Data;
 import edu.unh.cs.treccar.read_data.DeserializeData;
 import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
-import org.apache.lucene.document.StringField;
-import org.apache.lucene.document.TextField;
-import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.Term;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 
@@ -23,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 
 public class Assignment3 {
-
 
     public static void main(String[] args) throws FileNotFoundException, CborException {
         Map<String, String> queriesMap = new HashMap<>();

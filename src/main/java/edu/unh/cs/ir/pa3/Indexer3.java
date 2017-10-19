@@ -1,8 +1,6 @@
 package edu.unh.cs.ir.pa3;
 
 import co.nstant.in.cbor.CborException;
-import com.sun.istack.internal.Nullable;
-import edu.unh.cs.ir.similarities.LNCSimilarity;
 import edu.unh.cs.treccar.Data;
 import edu.unh.cs.treccar.read_data.DeserializeData;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
