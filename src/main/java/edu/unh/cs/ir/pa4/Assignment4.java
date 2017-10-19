@@ -1,6 +1,7 @@
 package edu.unh.cs.ir.pa4;
 
 import co.nstant.in.cbor.CborException;
+import edu.unh.cs.ir.similarities.LNCSimilarity;
 import edu.unh.cs.treccar.Data;
 import edu.unh.cs.treccar.read_data.DeserializeData;
 import org.apache.lucene.document.Document;
@@ -40,7 +41,7 @@ public class Assignment4 {
             // build a lucene index to retrieve paragraphs
             System.out.println("RebuildIndexes");
             Indexer4 indexer = new Indexer4();
-            indexer.rebuildIndexes(fISParags);
+            indexer.buildIndexes(fISParags, new LNCSimilarity()); //pass the specific similarity to indexer
             System.out.println("RebuildIndexes done");
 
             // perform search on the query
