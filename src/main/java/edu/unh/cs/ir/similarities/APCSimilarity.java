@@ -5,22 +5,19 @@ import org.apache.lucene.search.similarities.SimilarityBase;
 
 import static java.lang.Math.log10;
 
-public class LNCSimilarity extends SimilarityBase {
+public class APCSimilarity extends SimilarityBase {
 
-
-    public LNCSimilarity() {
+    public APCSimilarity() {
 
     }
 
-
     @Override
     protected float score(BasicStats stats, float freq, float docLen) {
-
-        float l = (float) (1 + log10(stats.getTotalTermFreq()));
-        float n = 1.0f;
+        float a = 0.5f + (0.5f * stats.getTotalTermFreq()); //TODO
+        float p = Math.max(0, (float) log10( (stats.getNumberOfDocuments() - stats.getDocFreq() ) / (stats.getDocFreq())));
         float c = stats.getValueForNormalization();
 
-        return (l * n * c);
+        return a * p * c;
     }
 
     @Override

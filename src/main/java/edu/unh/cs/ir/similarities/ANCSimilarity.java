@@ -3,24 +3,19 @@ package edu.unh.cs.ir.similarities;
 import org.apache.lucene.search.similarities.BasicStats;
 import org.apache.lucene.search.similarities.SimilarityBase;
 
-import static java.lang.Math.log10;
+public class ANCSimilarity extends SimilarityBase {
 
-public class LNCSimilarity extends SimilarityBase {
-
-
-    public LNCSimilarity() {
+    public ANCSimilarity() {
 
     }
 
-
     @Override
     protected float score(BasicStats stats, float freq, float docLen) {
-
-        float l = (float) (1 + log10(stats.getTotalTermFreq()));
+        //float max = Collections.max(stats.getTotalTermFreq());
+        float a = 0.5f + (0.5f * stats.getTotalTermFreq()); //TODO
         float n = 1.0f;
         float c = stats.getValueForNormalization();
-
-        return (l * n * c);
+        return a * n * c;
     }
 
     @Override
