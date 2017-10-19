@@ -31,7 +31,7 @@ public class Indexer4 {
         for (Data.Paragraph paragraph : DeserializeData.iterableParagraphs(fileInputStream)) {
             // Index all Accommodation entries
             if (indexWriter == null) {
-                Directory indexDir = FSDirectory.open(new File("index-directory3").toPath());
+                Directory indexDir = FSDirectory.open(new File("index-directory4").toPath());
                 IndexWriterConfig config = new IndexWriterConfig(new StandardAnalyzer());
                 if (similarity != null) {
                     config.setSimilarity(similarity);
