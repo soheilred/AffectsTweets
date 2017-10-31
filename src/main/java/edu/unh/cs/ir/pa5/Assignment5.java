@@ -9,6 +9,7 @@ import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.search.similarities.LMDirichletSimilarity;
 
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +21,8 @@ public class Assignment5 {
     public static void main(String[] args) throws FileNotFoundException, CborException {
         Map<String, String> queriesMap = new HashMap<>();
         List<String> qIdList = new ArrayList<>();
+        int methodsNum = 5;
+        int searchCutOff = 10;
 
         try {
             // make the run file:
@@ -52,31 +55,38 @@ public class Assignment5 {
             //new LMJelinekMercerSimilarity(0.9f)
             IndexSearcher5 se = new IndexSearcher5(new LMDirichletSimilarity(1000f)); //
 
+            int q_num = 0;
             for (Data.Page page : DeserializeData.iterableAnnotations(FISOutlines)) {
                 // Index all Accommodation entries
                 queriesMap.put(page.getPageId(), page.getPageName());
                 qIdList.add(page.getPageId());
+                q_num++;
             }
+            Map<String, String> rank[] = new HashMap<>(); // rank[q][d]
+            int i = 0,j = 0;
             for (String id : qIdList) {
                 String query = queriesMap.get(id);
-                System.out.println("\nThe query is: " + query);
-                TopDocs topDocs = se.performSearch(query, 100);
+                System.out.println("\nQuery: " + query);
+                TopDocs topDocs = se.performSearch(query, searchCutOff);
 
-                System.out.println("Top " + 100 + " results found: " + topDocs.totalHits);
+                System.out.println("Top " + searchCutOff + " results found: " + topDocs.totalHits);
                 ScoreDoc[] hits = topDocs.scoreDocs;
 
-                int rank = 0;
+                int ranking = 0;
                 for (ScoreDoc scoreDoc : hits) {
                     Document doc = se.getDocument(scoreDoc.doc);
-                    resultString = id + " Q0 " + doc.get("id")
-                            //+ " " + doc.get("content")
-                            + " " + ++rank
-                            + " " + scoreDoc.score + ""
-                            + " Team3-Practical";
-                    bW.write(resultString);
-                    bW.newLine();
-                    System.out.println(resultString);
+
+//                    resultString = id + " Q0 " + doc.get("id")
+//                            //+ " " + doc.get("content")
+//                            + " " + ++ranking
+//                            + " " + scoreDoc.score + ""
+//                            + " Team3-Practical";
+//                    bW.write(resultString);
+//                    bW.newLine();
+//                    System.out.println(resultString);
+                    j++;
                 }
+                i++;
             }
             bW.close();
         } catch (Exception e) {
