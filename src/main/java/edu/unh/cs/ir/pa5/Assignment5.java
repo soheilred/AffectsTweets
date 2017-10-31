@@ -24,12 +24,11 @@ public class Assignment5 {
         int methodsNum = 5;
         int searchCutOff = 10;
 
-
-
         try {
             // make the run file:
-            BufferedWriter bW = new BufferedWriter(new FileWriter("run_file_default5"));
-            String resultString;
+//            BufferedWriter bW = new BufferedWriter(new FileWriter("run_file_default5"));
+//            String resultString;
+
 
             // read the queries' file
             System.setProperty("file.encoding", "UTF-8");
@@ -41,8 +40,15 @@ public class Assignment5 {
             File fParags = new File("./test200/train.test200.cbor.paragraphs");
             final FileInputStream fISParags = new FileInputStream(fParags);
 
+
+            List<String> rankList = new ArrayList<>();
+            Map<String, List<String>> rankingsMap = new HashMap<String, List<String>>();
+
+
+
+
             // build a lucene index to retrieve paragraphs
-            System.out.println("RebuildIndexes");
+            /*System.out.println("RebuildIndexes");
             Indexer5 indexer = new Indexer5();
             indexer.buildIndexes(fISParags, null); //pass the specific similarity to indexer
             System.out.println("RebuildIndexes done");
@@ -63,7 +69,6 @@ public class Assignment5 {
                 q_num++;
             }
 
-            List< Map<String, String>> ss = new ArrayList<>(); // rank[q][d]
             int i = 0,j = 0;
             for (String id : qIdList) {
                 String query = queriesMap.get(id);
@@ -89,7 +94,9 @@ public class Assignment5 {
                 }
                 i++;
             }
-            bW.close();
+            bW.close();*/
+
+
         } catch (Exception e) {
             System.out.println("Exception caught.\n");
         }
