@@ -12,7 +12,6 @@ import java.io.FileNotFoundException;
 
 public class Assignment4_1 {
 
-
     public static void main(String[] args) throws FileNotFoundException, CborException {
 
         try {

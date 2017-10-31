@@ -24,10 +24,10 @@ public class Assignment5 {
         int methodsNum = 5;
         int searchCutOff = 10;
 
+
+
         try {
             // make the run file:
-            // run_file_default4
-            // run_file_custom4
             BufferedWriter bW = new BufferedWriter(new FileWriter("run_file_default5"));
             String resultString;
 
@@ -62,7 +62,8 @@ public class Assignment5 {
                 qIdList.add(page.getPageId());
                 q_num++;
             }
-            Map<String, String> rank[] = new HashMap<>(); // rank[q][d]
+
+            List< Map<String, String>> ss = new ArrayList<>(); // rank[q][d]
             int i = 0,j = 0;
             for (String id : qIdList) {
                 String query = queriesMap.get(id);

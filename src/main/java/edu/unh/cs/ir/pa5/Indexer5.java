@@ -22,7 +22,7 @@ import java.io.IOException;
 
 public class Indexer5 {
 
-    public Indexer5 (String address) {
+    public Indexer5 () {
     }
 
     private IndexWriter indexWriter;
@@ -31,7 +31,7 @@ public class Indexer5 {
         for (Data.Paragraph paragraph : DeserializeData.iterableParagraphs(fileInputStream)) {
             // Index all Accommodation entries
             if (indexWriter == null) {
-                Directory indexDir = FSDirectory.open(new File(address).toPath());
+                Directory indexDir = FSDirectory.open(new File("index-directory5").toPath());
                 IndexWriterConfig config = new IndexWriterConfig(new StandardAnalyzer());
                 if (similarity != null) {
                     config.setSimilarity(similarity);
