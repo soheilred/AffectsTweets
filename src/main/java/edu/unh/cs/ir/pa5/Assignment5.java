@@ -101,6 +101,7 @@ public class Assignment5 {
                 rlFormatted = rlFormatted.concat(" " + i + ":" + String.valueOf(features[1][i]));
             }
             bwRankLib.write(rlFormatted);
+            bwRankLib.close();
 
 
 //            3 qid:1 1:1 2:1 3:0 4:0.2 5:0 # 1A
