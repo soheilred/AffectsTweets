@@ -1,4 +1,4 @@
-package edu.unh.cs.ir.pa4;
+package edu.unh.cs.ir.pa5;
 
 import co.nstant.in.cbor.CborException;
 import edu.unh.cs.treccar.Data;
@@ -20,9 +20,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 
-public class Indexer4 {
+public class Indexer5 {
 
-    public Indexer4() {
+    public Indexer5() {
     }
 
     private IndexWriter indexWriter;
@@ -31,7 +31,7 @@ public class Indexer4 {
         for (Data.Paragraph paragraph : DeserializeData.iterableParagraphs(fileInputStream)) {
             // Index all Accommodation entries
             if (indexWriter == null) {
-                Directory indexDir = FSDirectory.open(new File("index-directory4").toPath());
+                Directory indexDir = FSDirectory.open(new File("index-directory5").toPath());
                 IndexWriterConfig config = new IndexWriterConfig(new StandardAnalyzer());
                 if (similarity != null) {
                     config.setSimilarity(similarity);
