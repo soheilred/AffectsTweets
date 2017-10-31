@@ -84,7 +84,7 @@ public class Assignment5 {
             for (int i = 1; i <= 4; i++) {
                 List<Integer> lrnk = rankingsMap.get(i);
 
-                for (int j = 0; j <= lrnk.size(); j++) {
+                for (int j = 1; j <= lrnk.size(); j++) {
                     if (lrnk.contains(j)) {
                         features[i][j] = (1 / lrnk.indexOf(j));
                     } else {
@@ -94,8 +94,16 @@ public class Assignment5 {
 
             }
 
-//            3 qid:1 1:1 2:1 3:0 4:0.2 5:0 # 1A
+            BufferedWriter bwRankLib = new BufferedWriter(new FileWriter("RankLib"));
 
+            String rlFormatted = 1 + " qid:" + 1;
+            for (int i = 1; i <= features[1].length; i++) {
+                rlFormatted = rlFormatted.concat(" " + i + ":" + String.valueOf(features[1][i]));
+            }
+            bwRankLib.write(rlFormatted);
+
+
+//            3 qid:1 1:1 2:1 3:0 4:0.2 5:0 # 1A
 
 
             // build a lucene index to retrieve paragraphs
