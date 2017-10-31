@@ -19,10 +19,10 @@ public class Assignment5 {
 
 
     public static void main(String[] args) throws FileNotFoundException, CborException {
-        Map<String, String> queriesMap = new HashMap<>();
-        List<String> qIdList = new ArrayList<>();
-        int methodsNum = 5;
-        int searchCutOff = 10;
+//        Map<String, String> queriesMap = new HashMap<>();
+//        List<String> qIdList = new ArrayList<>();
+//        int methodsNum = 5;
+//        int searchCutOff = 10;
 
         try {
             // make the run file:
@@ -31,7 +31,7 @@ public class Assignment5 {
 
 
             // read the queries' file
-            System.setProperty("file.encoding", "UTF-8");
+            /*System.setProperty("file.encoding", "UTF-8");
             File fOutlines = new File("./test200/train.test200.cbor.outlines");
             final FileInputStream FISOutlines = new FileInputStream(fOutlines);
 
@@ -39,56 +39,54 @@ public class Assignment5 {
             System.setProperty("file.encoding", "UTF-8");
             File fParags = new File("./test200/train.test200.cbor.paragraphs");
             final FileInputStream fISParags = new FileInputStream(fParags);
-
-            List<Integer> rankList = new ArrayList<>();
+*/
             Map<Integer, List<Integer>> rankingsMap = new HashMap<>();
 
-            rankList.add(1);
-            rankList.add(2);
-            rankList.add(3);
-            rankList.add(4);
-            rankList.add(5);
-            rankList.add(6);
-            rankingsMap.put(1, rankList);
+            List<Integer> rankList1 = new ArrayList<>();
+            rankList1.add(1);
+            rankList1.add(2);
+            rankList1.add(3);
+            rankList1.add(4);
+            rankList1.add(5);
+            rankList1.add(6);
+            rankingsMap.put(1, rankList1);
 
-            rankingsMap.clear();
+            List<Integer> rankList2 = new ArrayList<>();
+            rankList2.add(2);
+            rankList2.add(5);
+            rankList2.add(6);
+            rankList2.add(7);
+            rankList2.add(8);
+            rankList2.add(9);
+            rankList2.add(10);
+            rankList2.add(11);
+            rankingsMap.put(2, rankList2);
 
-            rankList.add(2);
-            rankList.add(5);
-            rankList.add(6);
-            rankList.add(7);
-            rankList.add(8);
-            rankList.add(9);
-            rankList.add(10);
-            rankList.add(11);
-            rankingsMap.put(2, rankList);
+            List<Integer> rankList3 = new ArrayList<>();
+            rankList3.add(1);
+            rankList3.add(2);
+            rankList3.add(5);
+            rankingsMap.put(3, rankList3);
 
-            rankingsMap.clear();
+            List<Integer> rankList4 = new ArrayList<>();
+            rankList4.add(1);
+            rankList4.add(2);
+            rankList4.add(8);
+            rankList4.add(10);
+            rankList4.add(12);
+            rankingsMap.put(4, rankList4);
 
-            rankList.add(1);
-            rankList.add(2);
-            rankList.add(5);
-            rankingsMap.put(3, rankList);
+            float features[][] = new float[4][12];
 
-            rankingsMap.clear();
+            for (int i = 0; i < 4; i++) {
+                List<Integer> lrnk = rankingsMap.get(i + 1);
 
-            rankList.add(1);
-            rankList.add(2);
-            rankList.add(8);
-            rankList.add(10);
-            rankList.add(12);
-            rankingsMap.put(4, rankList);
-
-            float features[][] = new float[4][];
-
-            for (int i = 1; i <= 4; i++) {
-                List<Integer> lrnk = rankingsMap.get(i);
-
-                for (int j = 1; j <= lrnk.size(); j++) {
-                    if (lrnk.contains(j)) {
-                        features[i][j] = (1 / lrnk.indexOf(j));
+                for (int j = 0; j < lrnk.size(); j++) {
+                    if (lrnk.contains(j + 1)) {
+                        features[i][j] = (float) (1 / (lrnk.indexOf(j + 1) + 1));
                     } else {
                         features[i][j] = 0;
+
                     }
                 }
 
@@ -97,8 +95,8 @@ public class Assignment5 {
             BufferedWriter bwRankLib = new BufferedWriter(new FileWriter("RankLib"));
 
             String rlFormatted = 1 + " qid:" + 1;
-            for (int i = 1; i <= features[1].length; i++) {
-                rlFormatted = rlFormatted.concat(" " + i + ":" + String.valueOf(features[1][i]));
+            for (int i = 0; i < features[0].length; i++) {
+                rlFormatted = rlFormatted.concat(" " + i + ":" + String.valueOf(features[0][i]));
             }
             bwRankLib.write(rlFormatted);
             bwRankLib.close();
