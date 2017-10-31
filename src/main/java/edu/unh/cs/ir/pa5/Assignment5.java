@@ -40,10 +40,44 @@ public class Assignment5 {
             File fParags = new File("./test200/train.test200.cbor.paragraphs");
             final FileInputStream fISParags = new FileInputStream(fParags);
 
-
             List<String> rankList = new ArrayList<>();
-            Map<String, List<String>> rankingsMap = new HashMap<String, List<String>>();
+            Map<String, List<String>> rankingsMap = new HashMap<>();
 
+            rankList.add("D1");
+            rankList.add("D2");
+            rankList.add("D3");
+            rankList.add("D4");
+            rankList.add("D5");
+            rankList.add("D6");
+            rankingsMap.put("R1",rankList);
+
+            rankingsMap.clear();
+
+            rankList.add("D2");
+            rankList.add("D5");
+            rankList.add("D6");
+            rankList.add("D7");
+            rankList.add("D8");
+            rankList.add("D9");
+            rankList.add("D10");
+            rankList.add("D11");
+            rankingsMap.put("R2",rankList);
+
+            rankingsMap.clear();
+
+            rankList.add("D1");
+            rankList.add("D2");
+            rankList.add("D5");
+            rankingsMap.put("R3",rankList);
+
+            rankingsMap.clear();
+
+            rankList.add("D1");
+            rankList.add("D2");
+            rankList.add("D8");
+            rankList.add("D10");
+            rankList.add("D12");
+            rankingsMap.put("R4",rankList);
 
 
 
