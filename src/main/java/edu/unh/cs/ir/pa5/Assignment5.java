@@ -40,50 +40,62 @@ public class Assignment5 {
             File fParags = new File("./test200/train.test200.cbor.paragraphs");
             final FileInputStream fISParags = new FileInputStream(fParags);
 
-            List<String> rankList = new ArrayList<>();
-            Map<Integer, List<String>> rankingsMap = new HashMap<>();
+            List<Integer> rankList = new ArrayList<>();
+            Map<Integer, List<Integer>> rankingsMap = new HashMap<>();
 
-            rankList.add("D1");
-            rankList.add("D2");
-            rankList.add("D3");
-            rankList.add("D4");
-            rankList.add("D5");
-            rankList.add("D6");
-            rankingsMap.put(1,rankList);
-
-            rankingsMap.clear();
-
-            rankList.add("D2");
-            rankList.add("D5");
-            rankList.add("D6");
-            rankList.add("D7");
-            rankList.add("D8");
-            rankList.add("D9");
-            rankList.add("D10");
-            rankList.add("D11");
-            rankingsMap.put(2,rankList);
+            rankList.add(1);
+            rankList.add(2);
+            rankList.add(3);
+            rankList.add(4);
+            rankList.add(5);
+            rankList.add(6);
+            rankingsMap.put(1, rankList);
 
             rankingsMap.clear();
 
-            rankList.add("D1");
-            rankList.add("D2");
-            rankList.add("D5");
-            rankingsMap.put(3,rankList);
+            rankList.add(2);
+            rankList.add(5);
+            rankList.add(6);
+            rankList.add(7);
+            rankList.add(8);
+            rankList.add(9);
+            rankList.add(10);
+            rankList.add(11);
+            rankingsMap.put(2, rankList);
 
             rankingsMap.clear();
 
-            rankList.add("D1");
-            rankList.add("D2");
-            rankList.add("D8");
-            rankList.add("D10");
-            rankList.add("D12");
-            rankingsMap.put(4,rankList);
+            rankList.add(1);
+            rankList.add(2);
+            rankList.add(5);
+            rankingsMap.put(3, rankList);
 
-            float features[];
+            rankingsMap.clear();
 
-            for (int i = 1; i < 4 + 1; i++) {
+            rankList.add(1);
+            rankList.add(2);
+            rankList.add(8);
+            rankList.add(10);
+            rankList.add(12);
+            rankingsMap.put(4, rankList);
+
+            float features[][] = new float[4][];
+
+            for (int i = 1; i <= 4; i++) {
+                List<Integer> lrnk = rankingsMap.get(i);
+
+                for (int j = 0; j <= lrnk.size(); j++) {
+                    if (lrnk.contains(j)) {
+                        features[i][j] = (1 / lrnk.indexOf(j));
+                    } else {
+                        features[i][j] = 0;
+                    }
+                }
 
             }
+
+//            3 qid:1 1:1 2:1 3:0 4:0.2 5:0 # 1A
+
 
 
             // build a lucene index to retrieve paragraphs
