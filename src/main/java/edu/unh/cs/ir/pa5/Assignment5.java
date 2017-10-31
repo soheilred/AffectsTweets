@@ -41,7 +41,7 @@ public class Assignment5 {
             final FileInputStream fISParags = new FileInputStream(fParags);
 
             List<String> rankList = new ArrayList<>();
-            Map<String, List<String>> rankingsMap = new HashMap<>();
+            Map<Integer, List<String>> rankingsMap = new HashMap<>();
 
             rankList.add("D1");
             rankList.add("D2");
@@ -49,7 +49,7 @@ public class Assignment5 {
             rankList.add("D4");
             rankList.add("D5");
             rankList.add("D6");
-            rankingsMap.put("R1",rankList);
+            rankingsMap.put(1,rankList);
 
             rankingsMap.clear();
 
@@ -61,14 +61,14 @@ public class Assignment5 {
             rankList.add("D9");
             rankList.add("D10");
             rankList.add("D11");
-            rankingsMap.put("R2",rankList);
+            rankingsMap.put(2,rankList);
 
             rankingsMap.clear();
 
             rankList.add("D1");
             rankList.add("D2");
             rankList.add("D5");
-            rankingsMap.put("R3",rankList);
+            rankingsMap.put(3,rankList);
 
             rankingsMap.clear();
 
@@ -77,8 +77,13 @@ public class Assignment5 {
             rankList.add("D8");
             rankList.add("D10");
             rankList.add("D12");
-            rankingsMap.put("R4",rankList);
+            rankingsMap.put(4,rankList);
 
+            float features[];
+
+            for (int i = 1; i < 4 + 1; i++) {
+
+            }
 
 
             // build a lucene index to retrieve paragraphs
