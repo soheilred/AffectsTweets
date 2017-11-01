@@ -64,7 +64,7 @@ public class Assignment5 {
 
         Assignment5 a5 = new Assignment5();
         try {
-            BufferedWriter bW = new BufferedWriter(new FileWriter("RankLibOutput"));
+            BufferedWriter bw = new BufferedWriter(new FileWriter("RankLibOutput"));
 
             String[] runfileFuncs = {"outputs/pa5/LM_U", "outputs/pa5/U_JM", "outputs/pa5/U_DS"};
 
@@ -79,7 +79,7 @@ public class Assignment5 {
             final FileInputStream fISParags = new FileInputStream(fParags);
 
             double feature = 0;
-            String featureStr ="";
+            String featureStr = "";
             int target = 0;
             for (Data.Page page : DeserializeData.iterableAnnotations(fISOutlines)) {
                 qId = page.getPageId();
@@ -95,17 +95,17 @@ public class Assignment5 {
                         featureStr = featureStr.concat(" " + i + 1 + ":" + feature);
                         target = a5.targetParser("./train.test200.cbor.article.qrels", qId, dId);
                     }
-
-
+                    rankLibStr.add(target + " qid:" + qId + featureStr + " # " + dId);
                 }
             }
 
-    } catch(
-    Exception e)
-
-    {
-        System.out.println("Exception caught." + e.toString() + "\n");
-    }
+            for (String str : rankLibStr) {
+                bw.write(str + "\n");
+            }
+            bw.close();
+        } catch (Exception e) {
+            System.out.println("Exception caught." + e.toString() + "\n");
+        }
 
 
 //        Map<String, String> queriesMap = new HashMap<>();
@@ -113,16 +113,16 @@ public class Assignment5 {
 //        int methodsNum = 5;
 //        int searchCutOff = 10;
 
-        try
+        /*try
 
-    {
-        // make the run file:
+        {
+            // make the run file:
 //            BufferedWriter bW = new BufferedWriter(new FileWriter("run_file_default5"));
 //            String resultString;
 
 
-        // read the queries' file
-            /*System.setProperty("file.encoding", "UTF-8");
+            // read the queries' file
+            *//*System.setProperty("file.encoding", "UTF-8");
             File fOutlines = new File("./test200/train.test200.cbor.outlines");
             final FileInputStream FISOutlines = new FileInputStream(fOutlines);
 
@@ -130,75 +130,75 @@ public class Assignment5 {
             System.setProperty("file.encoding", "UTF-8");
             File fParags = new File("./test200/train.test200.cbor.paragraphs");
             final FileInputStream fISParags = new FileInputStream(fParags);
-*/
-        Map<String, String[]> rankingsMap = new HashSet<>();
+*//*
+            Map<String, String[]> rankingsMap = new HashSet<>();
 
-        String[] rank = new String[20];
-        rank[0] = "D1";
-        rank[1] = "D2";
-        rank[2] = "D3";
-        rank[3] = "D4";
-        rank[4] = "D5";
-        rank[5] = "D6";
-        rankingsMap.put("R1", rank);
+            String[] rank = new String[20];
+            rank[0] = "D1";
+            rank[1] = "D2";
+            rank[2] = "D3";
+            rank[3] = "D4";
+            rank[4] = "D5";
+            rank[5] = "D6";
+            rankingsMap.put("R1", rank);
 
-        rank = new String[20];
-        rank[0] = "D2";
-        rank[1] = "D5";
-        rank[2] = "D6";
-        rank[2] = "D7";
-        rank[3] = "D8";
-        rank[4] = "D9";
-        rank[5] = "D10";
-        rank[6] = "D11";
-        rankingsMap.put("R2", rank);
+            rank = new String[20];
+            rank[0] = "D2";
+            rank[1] = "D5";
+            rank[2] = "D6";
+            rank[2] = "D7";
+            rank[3] = "D8";
+            rank[4] = "D9";
+            rank[5] = "D10";
+            rank[6] = "D11";
+            rankingsMap.put("R2", rank);
 
-        rank = new String[20];
-        rank[0] = "D1";
-        rank[1] = "D2";
-        rank[2] = "D5";
-        rankingsMap.put("R3", rank);
+            rank = new String[20];
+            rank[0] = "D1";
+            rank[1] = "D2";
+            rank[2] = "D5";
+            rankingsMap.put("R3", rank);
 
-        rank = new String[20];
-        rank[0] = "D1";
-        rank[1] = "D2";
-        rank[2] = "D8";
-        rank[3] = "D10";
-        rank[4] = "D12";
-        rankingsMap.put("R4", rank);
+            rank = new String[20];
+            rank[0] = "D1";
+            rank[1] = "D2";
+            rank[2] = "D8";
+            rank[3] = "D10";
+            rank[4] = "D12";
+            rankingsMap.put("R4", rank);
 
-        float features[][] = new float[4][12];
+            float features[][] = new float[4][12];
 
-        for (int i = 0; i < 4; i++) {
-            String[] rnk = rankingsMap.get(i + 1);
+            for (int i = 0; i < 4; i++) {
+                String[] rnk = rankingsMap.get(i + 1);
 
-            for (int j = 0; j < rnk.length; j++) {
-                for ()
-                    if (rnk.contains("D" + j)) {
-                        features[i][j] = (float) (1 / (rnk.indexOf("D" + j) + 1));
-                    } else {
-                        features[i][j] = 0;
+                for (int j = 0; j < rnk.length; j++) {
+                    for ()
+                        if (rnk.contains("D" + j)) {
+                            features[i][j] = (float) (1 / (rnk.indexOf("D" + j) + 1));
+                        } else {
+                            features[i][j] = 0;
 
-                    }
+                        }
+                }
+
             }
 
-        }
 
+            BufferedWriter bwRankLib = new BufferedWriter(new FileWriter("RankLib"));
 
-        BufferedWriter bwRankLib = new BufferedWriter(new FileWriter("RankLib"));
-
-        String rlFormatted = 1 + " qid:" + 1;
-        for (int i = 0; i < features[0].length; i++) {
-            rlFormatted = rlFormatted.concat(" " + i + ":" + String.valueOf(features[0][i]));
-        }
-        bwRankLib.write(rlFormatted);
-        bwRankLib.close();
+            String rlFormatted = 1 + " qid:" + 1;
+            for (int i = 0; i < features[0].length; i++) {
+                rlFormatted = rlFormatted.concat(" " + i + ":" + String.valueOf(features[0][i]));
+            }
+            bwRankLib.write(rlFormatted);
+            bwRankLib.close();
 
 
 //            3 qid:1 1:1 2:1 3:0 4:0.2 5:0 # 1A
 
-        // build a lucene index to retrieve paragraphs
-            /*System.out.println("RebuildIndexes");
+            // build a lucene index to retrieve paragraphs
+            *//*System.out.println("RebuildIndexes");
             Indexer5 indexer = new Indexer5();
             indexer.buildIndexes(fISParags, null); //pass the specific similarity to indexer
             System.out.println("RebuildIndexes done");
@@ -244,16 +244,16 @@ public class Assignment5 {
                 }
                 i++;
             }
-            bW.close();*/
+            bW.close();*//*
 
 
-    } catch(
-    Exception e)
+        } catch (
+                Exception e)
 
-    {
-        System.out.println("Exception caught.\n");
+        {
+            System.out.println("Exception caught.\n");
+        }*/
+
     }
-
-}
 
 }
