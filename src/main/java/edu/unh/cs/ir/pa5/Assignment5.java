@@ -26,7 +26,7 @@ public class Assignment5 {
             ArrayList<String> rankLibStr = new ArrayList<>();
             int rank = 0;
 
-            double feature = 0;
+            float feature = 0;
             String featureStr = "";
             int target = 0;
             qId = "Q";
@@ -36,11 +36,11 @@ public class Assignment5 {
                 for (int i = 0; i < runfileFuncs.length; i++) {
                     rank = rankParser(runfileFuncs[i], dId, qId);
                     if (rank > 0) {
-                        feature = (1.0 / (double) rank);
+                        feature = (1 / (float) rank);
                     } else {
                         feature = 0;
                     }
-                    featureStr = featureStr.concat(" " + (i + 1) + ":" + feature);
+                    featureStr = featureStr.concat(" " + (i + 1) + ":" + String.format("%.2f",feature));
                     target = targetParser("outputs/pa5/U_DS", qId, dId);
                 }
                 rankLibStr.add(target + " qid:" + qId + featureStr + " # " + dId);
@@ -62,7 +62,7 @@ public class Assignment5 {
         String dId;
 
         try {
-            BufferedWriter bw = new BufferedWriter(new FileWriter("RankLibOutput"));
+            BufferedWriter bw = new BufferedWriter(new FileWriter("RankLibOutputTask2"));
 
             String[] runfileFuncs = {"outputs/pa5/bnn_bnn", "outputs/pa5/lnc_ltn", "outputs/pa5/LM_U", "outputs/pa5/U_JM", "outputs/pa5/U_DS"};
 
