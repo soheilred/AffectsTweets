@@ -37,6 +37,27 @@ public class Assignment5 {
         return rank;
     }
 
+    public int targetParser(String qrelFile, String doc, String query) {
+        int target = 0;
+
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(qrelFile));
+            String line;
+            String[] linesArray;
+            while ((line = br.readLine()) != null) {
+                linesArray = line.split(" ");
+                if (linesArray[0].equals(query) && linesArray[2].equals(doc)) {
+                    target = 1;
+                }
+                break;
+            }
+            br.close();
+        } catch (Exception e) {
+            System.out.println("Target Parser Exception Caught." + e.toString() + "\n");
+        }
+        return target;
+    }
+
     public static void main(String[] args) throws FileNotFoundException, CborException {
         String qId;
         String dId;
@@ -58,6 +79,8 @@ public class Assignment5 {
             final FileInputStream fISParags = new FileInputStream(fParags);
 
             double feature = 0;
+            String featureStr ="";
+            int target = 0;
             for (Data.Page page : DeserializeData.iterableAnnotations(fISOutlines)) {
                 qId = page.getPageId();
                 for (Data.Paragraph paragraph : DeserializeData.iterableParagraphs(fISParags)) {
@@ -66,14 +89,16 @@ public class Assignment5 {
                         rank = a5.rankParser(runfileFuncs[i], dId, qId);
                         if (rank > 0) {
                             feature = (1.0 / (double) rank);
+                        } else {
+                            feature = 0;
                         }
+                        featureStr = featureStr.concat(" " + i + 1 + ":" + feature);
+                        target = a5.targetParser("./train.test200.cbor.article.qrels", qId, dId);
                     }
+
 
                 }
             }
-
-        }
-
 
     } catch(
     Exception e)
