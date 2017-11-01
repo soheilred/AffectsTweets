@@ -66,7 +66,7 @@ public class Assignment5 {
         try {
             BufferedWriter bw = new BufferedWriter(new FileWriter("RankLibOutput"));
 
-            String[] runfileFuncs = {"outputs/pa5/LM_U", "outputs/pa5/U_JM", "outputs/pa5/U_DS"};
+            String[] runfileFuncs = {"bnn_bnn", "lnc_ltn", "outputs/pa5/LM_U", "outputs/pa5/U_JM", "outputs/pa5/U_DS"};
 
             ArrayList<String> rankLibStr = new ArrayList<>();
             int rank = 0;
