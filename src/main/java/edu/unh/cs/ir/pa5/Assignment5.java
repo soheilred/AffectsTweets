@@ -10,15 +10,72 @@ import org.apache.lucene.search.similarities.LMDirichletSimilarity;
 
 import java.io.*;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Assignment5 {
 
 
+    public int rankParser(String rf, String doc, String query) {
+        int rank = 0;
+
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(rf));
+            String line;
+            String[] linesArray;
+            while ((line = br.readLine()) != null) {
+                linesArray = line.split(" ");
+                if (linesArray[0].equals(query) && linesArray[2].equals(doc)) {
+                    rank = Integer.parseInt(linesArray[3]);
+                    break;
+                }
+            }
+
+            br.close();
+        } catch (Exception e) {
+            System.out.println("Run File Parser Exception Caught." + e.toString() + "\n");
+        }
+        return rank;
+    }
+
     public static void main(String[] args) throws FileNotFoundException, CborException {
+        String qId;
+        try {
+            BufferedWriter bW = new BufferedWriter(new FileWriter("RankLibOutput"));
+
+            String[] runfileFuncs = {"outputs/pa5/LM_U", "outputs/pa5/U_JM", "outputs/pa5/U_DS"};
+
+            ArrayList<String> rankLibStr = new ArrayList<>();
+            int rank = 0;
+            // read the queries' file
+            File fOutlines = new File("./test200/train.test200.cbor.outlines");
+            final FileInputStream fISOutlines = new FileInputStream(fOutlines);
+
+            // read the paragraphs' file
+            File fParags = new File("./test200/train.test200.cbor.paragraphs");
+            final FileInputStream fISParags = new FileInputStream(fParags);
+
+            int queryCount = 0;
+            for (Data.Page page : DeserializeData.iterableAnnotations(fISOutlines)) {
+                queryCount++;
+            }
+
+            for (Data.Page page : DeserializeData.iterableAnnotations(fISOutlines)) {
+                qId = page.getPageId();
+                for (Data.Paragraph paragraph : DeserializeData.iterableParagraphs(fISParags)) {
+                    for (int i = 0; i < queryCount; i++) {
+                        rank = this.rankParser(runfileFuncs)
+
+                    }
+                }
+
+            }
+
+
+        } catch (Exception e) {
+            System.out.println("Exception caught." + e.toString() + "\n");
+        }
+
+
 //        Map<String, String> queriesMap = new HashMap<>();
 //        List<String> qIdList = new ArrayList<>();
 //        int methodsNum = 5;
@@ -40,57 +97,59 @@ public class Assignment5 {
             File fParags = new File("./test200/train.test200.cbor.paragraphs");
             final FileInputStream fISParags = new FileInputStream(fParags);
 */
-            Map<Integer, List<Integer>> rankingsMap = new HashMap<>();
+            Map<String, String[]> rankingsMap = new HashSet<>();
 
-            List<Integer> rankList1 = new ArrayList<>();
-            rankList1.add(1);
-            rankList1.add(2);
-            rankList1.add(3);
-            rankList1.add(4);
-            rankList1.add(5);
-            rankList1.add(6);
-            rankingsMap.put(1, rankList1);
+            String[] rank = new String[20];
+            rank[0] = "D1";
+            rank[1] = "D2";
+            rank[2] = "D3";
+            rank[3] = "D4";
+            rank[4] = "D5";
+            rank[5] = "D6";
+            rankingsMap.put("R1", rank);
 
-            List<Integer> rankList2 = new ArrayList<>();
-            rankList2.add(2);
-            rankList2.add(5);
-            rankList2.add(6);
-            rankList2.add(7);
-            rankList2.add(8);
-            rankList2.add(9);
-            rankList2.add(10);
-            rankList2.add(11);
-            rankingsMap.put(2, rankList2);
+            rank = new String[20];
+            rank[0] = "D2";
+            rank[1] = "D5";
+            rank[2] = "D6";
+            rank[2] = "D7";
+            rank[3] = "D8";
+            rank[4] = "D9";
+            rank[5] = "D10";
+            rank[6] = "D11";
+            rankingsMap.put("R2", rank);
 
-            List<Integer> rankList3 = new ArrayList<>();
-            rankList3.add(1);
-            rankList3.add(2);
-            rankList3.add(5);
-            rankingsMap.put(3, rankList3);
+            rank = new String[20];
+            rank[0] = "D1";
+            rank[1] = "D2";
+            rank[2] = "D5";
+            rankingsMap.put("R3", rank);
 
-            List<Integer> rankList4 = new ArrayList<>();
-            rankList4.add(1);
-            rankList4.add(2);
-            rankList4.add(8);
-            rankList4.add(10);
-            rankList4.add(12);
-            rankingsMap.put(4, rankList4);
+            rank = new String[20];
+            rank[0] = "D1";
+            rank[1] = "D2";
+            rank[2] = "D8";
+            rank[3] = "D10";
+            rank[4] = "D12";
+            rankingsMap.put("R4", rank);
 
             float features[][] = new float[4][12];
 
             for (int i = 0; i < 4; i++) {
-                List<Integer> lrnk = rankingsMap.get(i + 1);
+                String[] rnk = rankingsMap.get(i + 1);
 
-                for (int j = 0; j < lrnk.size(); j++) {
-                    if (lrnk.contains(j + 1)) {
-                        features[i][j] = (float) (1 / (lrnk.indexOf(j + 1) + 1));
-                    } else {
-                        features[i][j] = 0;
+                for (int j = 0; j < rnk.length; j++) {
+                    for ()
+                        if (rnk.contains("D" + j)) {
+                            features[i][j] = (float) (1 / (rnk.indexOf("D" + j) + 1));
+                        } else {
+                            features[i][j] = 0;
 
-                    }
+                        }
                 }
 
             }
+
 
             BufferedWriter bwRankLib = new BufferedWriter(new FileWriter("RankLib"));
 
@@ -103,7 +162,6 @@ public class Assignment5 {
 
 
 //            3 qid:1 1:1 2:1 3:0 4:0.2 5:0 # 1A
-
 
             // build a lucene index to retrieve paragraphs
             /*System.out.println("RebuildIndexes");
