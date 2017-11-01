@@ -31,6 +31,7 @@ public class Assignment5 {
             int target = 0;
             qId = "Q";
             for (int j = 0; j <12; j++) {
+                featureStr = "";
                 dId = "D" + String.valueOf(j + 1);
                 for (int i = 0; i < runfileFuncs.length; i++) {
                     rank = rankParser(runfileFuncs[i], dId, qId);
