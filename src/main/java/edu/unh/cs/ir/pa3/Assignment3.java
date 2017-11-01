@@ -30,7 +30,7 @@ public class Assignment3 {
 
         try {
             // make the run file
-            BufferedWriter bW = new BufferedWriter(new FileWriter("run_file"));
+            BufferedWriter bW = new BufferedWriter(new FileWriter("lnc_run_file"));
             String resultString;
 
             // read the queries' file
@@ -46,13 +46,13 @@ public class Assignment3 {
             // build a lucene index to retrieve paragraphs
             System.out.println("RebuildIndexes");
             Indexer3 indexer = new Indexer3();
-            indexer.buildIndexes(fISParags, new BNNSimilarity()); //pass the specific similarity to indexer
+            indexer.buildIndexes(fISParags, new LNCSimilarity()); //pass the specific similarity to indexer
             System.out.println("RebuildIndexes done");
 
             // perform search on the query
             // and retrieve the top 100 result
             System.out.println("\n--------------\nPerformSearch:");
-            IndexSearcher3 se = new IndexSearcher3(new BNNSimilarity());
+            IndexSearcher3 se = new IndexSearcher3(new LTNSimilarity());
 
             for (Data.Page page : DeserializeData.iterableAnnotations(fISOutlines)) {
                 // Index all Accommodation entries
@@ -62,7 +62,7 @@ public class Assignment3 {
             for (String id : qIdList) {
                 String query = queriesMap.get(id);
                 System.out.println("\nThe query is: " + query);
-                TopDocs topDocs = se.performSearch(query, 100);
+                TopDocs topDocs = se.performSearch(query, 10);
 
                 System.out.println("Top " + 100 + " results found: " + topDocs.totalHits);
                 ScoreDoc[] hits = topDocs.scoreDocs;

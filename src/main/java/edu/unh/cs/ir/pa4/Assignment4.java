@@ -7,6 +7,7 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.search.similarities.LMDirichletSimilarity;
+import org.apache.lucene.search.similarities.LMJelinekMercerSimilarity;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class Assignment4 {
             // make the run file:
             // run_file_default4
             // run_file_custom4
-            BufferedWriter bW = new BufferedWriter(new FileWriter("run_file_default4"));
+            BufferedWriter bW = new BufferedWriter(new FileWriter("dric_run_file"));
             String resultString;
 
             // read the queries' file
@@ -50,7 +51,7 @@ public class Assignment4 {
 
             //new LMDirichletSimilarity(1000f)
             //new LMJelinekMercerSimilarity(0.9f)
-            IndexSearcher4 se = new IndexSearcher4(new LMDirichletSimilarity(1000f)); //
+            IndexSearcher4 se = new IndexSearcher4(new LMJelinekMercerSimilarity(0.9f)); //
 
             for (Data.Page page : DeserializeData.iterableAnnotations(FISOutlines)) {
                 // Index all Accommodation entries
@@ -60,7 +61,7 @@ public class Assignment4 {
             for (String id : qIdList) {
                 String query = queriesMap.get(id);
                 System.out.println("\nThe query is: " + query);
-                TopDocs topDocs = se.performSearch(query, 100);
+                TopDocs topDocs = se.performSearch(query, 10);
 
                 System.out.println("Top " + 100 + " results found: " + topDocs.totalHits);
                 ScoreDoc[] hits = topDocs.scoreDocs;
