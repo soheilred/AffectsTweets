@@ -21,7 +21,7 @@ public class Assignment5 {
         try {
             BufferedWriter bw = new BufferedWriter(new FileWriter("RankLibOutputTask1"));
 
-            String[] runfileFuncs = {"outputs/pa5/bnn_bnn", "outputs/pa5/lnc_ltn", "outputs/pa5/LM_U", "outputs/pa5/U_JM"};
+            String[] runfileFuncs = {"outputs/pa5/LM_U","outputs/pa5/U_JM", "outputs/pa5/lnc_ltn" ,"outputs/pa5/bnn_bnn"};
 
             ArrayList<String> rankLibStr = new ArrayList<>();
             int rank = 0;
@@ -64,7 +64,7 @@ public class Assignment5 {
         try {
             BufferedWriter bw = new BufferedWriter(new FileWriter("RankLibOutputTask2"));
 
-            String[] runfileFuncs = {"outputs/pa5/bnn_bnn", "outputs/pa5/lnc_ltn", "outputs/pa5/LM_U", "outputs/pa5/U_JM", "outputs/pa5/U_DS"};
+            String[] runfileFuncs = {"outputs/pa5/lnc_ltn", "outputs/pa5/bnn_bnn", "outputs/pa5/LM_U", "outputs/pa5/U_JM", "outputs/pa5/U_DS"};
 
             ArrayList<String> rankLibStr = new ArrayList<>();
             int rank = 0;
@@ -76,7 +76,7 @@ public class Assignment5 {
             File fParags = new File("./test200/train.test200.cbor.paragraphs");
             final FileInputStream fISParags = new FileInputStream(fParags);
 
-            double feature = 0;
+            float feature = 0;
             String featureStr = "";
             int target = 0;
             for (Data.Page page : DeserializeData.iterableAnnotations(fISOutlines)) {
@@ -86,11 +86,11 @@ public class Assignment5 {
                     for (int i = 0; i < runfileFuncs.length; i++) {
                         rank = rankParser(runfileFuncs[i], dId, qId);
                         if (rank > 0) {
-                            feature = (1.0 / (double) rank);
+                            feature = (1 / (float) rank);
                         } else {
                             feature = 0;
                         }
-                        featureStr = featureStr.concat(" " + (i + 1) + ":" + feature);
+                        featureStr = featureStr.concat(" " + (i + 1) + ":" + String.format("%.2f",feature));
                         target = targetParser("./test200/train.test200.cbor.article.qrels", qId, dId);
                     }
                     rankLibStr.add(target + " qid:" + qId + featureStr + " # " + dId);
@@ -151,7 +151,7 @@ public class Assignment5 {
     }
 
     public static void main(String[] args) throws FileNotFoundException, CborException {
-        int taskNumber = 1;
+        int taskNumber = 2; //TODO: change this to run for the desired task
         Assignment5 a5 = new Assignment5();
 
         if (taskNumber == 1) {
