@@ -158,7 +158,6 @@ public class Assignment5 {
             a5.task1();
         } else {
             a5.task2();
-
         }
     }
 
