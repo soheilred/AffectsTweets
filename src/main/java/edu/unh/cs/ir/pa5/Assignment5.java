@@ -21,7 +21,7 @@ public class Assignment5 {
         try {
             BufferedWriter bw = new BufferedWriter(new FileWriter("RankLibOutputTask1"));
 
-            String[] runfileFuncs = {"outputs/pa5/LM_U","outputs/pa5/U_JM", "outputs/pa5/lnc_ltn" ,"outputs/pa5/bnn_bnn"};
+            String[] runfileFuncs = {"outputs/pa5/LM_U", "outputs/pa5/U_JM", "outputs/pa5/lnc_ltn", "outputs/pa5/bnn_bnn"};
 
             ArrayList<String> rankLibStr = new ArrayList<>();
             int rank = 0;
@@ -30,7 +30,7 @@ public class Assignment5 {
             String featureStr = "";
             int target = 0;
             qId = "Q";
-            for (int j = 0; j <12; j++) {
+            for (int j = 0; j < 12; j++) {
                 featureStr = "";
                 dId = "D" + String.valueOf(j + 1);
                 for (int i = 0; i < runfileFuncs.length; i++) {
@@ -40,8 +40,8 @@ public class Assignment5 {
                     } else {
                         feature = 0;
                     }
-                    featureStr = featureStr.concat(" " + (i + 1) + ":" + String.format("%.2f",feature));
-                    target = targetParser("outputs/pa5/U_DS", qId, dId);
+                    featureStr = featureStr.concat(" " + (i + 1) + ":" + String.format("%.2f", feature));
+                    target = targetParser("outputs/pa5/U_DS", dId, qId);
                 }
                 rankLibStr.add(target + " qid:" + qId + featureStr + " # " + dId);
             }
@@ -90,7 +90,7 @@ public class Assignment5 {
                         } else {
                             feature = 0;
                         }
-                        featureStr = featureStr.concat(" " + (i + 1) + ":" + String.format("%.2f",feature));
+                        featureStr = featureStr.concat(" " + (i + 1) + ":" + String.format("%.2f", feature));
                         target = targetParser("./test200/train.test200.cbor.article.qrels", qId, dId);
                     }
                     rankLibStr.add(target + " qid:" + qId + featureStr + " # " + dId);
@@ -131,7 +131,6 @@ public class Assignment5 {
 
     public int targetParser(String qrelFile, String doc, String query) {
         int target = 0;
-
         try {
             BufferedReader br = new BufferedReader(new FileReader(qrelFile));
             String line;
@@ -140,8 +139,8 @@ public class Assignment5 {
                 linesArray = line.split(" ");
                 if (linesArray[0].equals(query) && linesArray[2].equals(doc)) {
                     target = 1;
+                    break;
                 }
-                break;
             }
             br.close();
         } catch (Exception e) {
@@ -151,7 +150,7 @@ public class Assignment5 {
     }
 
     public static void main(String[] args) throws FileNotFoundException, CborException {
-        int taskNumber = 2; //TODO: change this to run for the desired task
+        int taskNumber = 1; //TODO: change this to run for the desired task
         Assignment5 a5 = new Assignment5();
 
         if (taskNumber == 1) {
