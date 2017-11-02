@@ -19,7 +19,7 @@ public class Assignment5 {
         String dId;
 
         try {
-            BufferedWriter bw = new BufferedWriter(new FileWriter("RankLibOutputTask1"));
+            BufferedWriter bw = new BufferedWriter(new FileWriter("outputs/pa5/RankLibFileTask1"));
 
             String[] runfileFuncs = {"outputs/pa5/LM_U", "outputs/pa5/U_JM", "outputs/pa5/lnc_ltn", "outputs/pa5/bnn_bnn"};
 
@@ -62,7 +62,7 @@ public class Assignment5 {
         String dId;
 
         try {
-            BufferedWriter bw = new BufferedWriter(new FileWriter("RankLibOutputTask2"));
+            BufferedWriter bw = new BufferedWriter(new FileWriter("RankLibFileTask2"));
 
             String[] runfileFuncs = {"outputs/pa5/lnc_ltn", "outputs/pa5/bnn_bnn", "outputs/pa5/LM_U", "outputs/pa5/U_JM", "outputs/pa5/U_DS"};
 
