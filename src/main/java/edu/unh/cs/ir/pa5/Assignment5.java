@@ -31,8 +31,8 @@ public class Assignment5 {
             int target = 0;
             qId = "Q";
             for (int j = 0; j < 12; j++) {
-                featureStr = "";
                 dId = "D" + String.valueOf(j + 1);
+                featureStr = "";
                 for (int i = 0; i < runfileFuncs.length; i++) {
                     rank = rankParser(runfileFuncs[i], dId, qId);
                     if (rank > 0) {
@@ -76,13 +76,23 @@ public class Assignment5 {
             File fParags = new File("./test200/train.test200.cbor.paragraphs");
             final FileInputStream fISParags = new FileInputStream(fParags);
 
+            ////////////////
+            int ii = 0;
+            int paraSize = 4689;
+            String[] docID = new String[paraSize];
+            for (Data.Paragraph paragraph : DeserializeData.iterableParagraphs(fISParags)) {
+                docID[ii] = paragraph.getParaId();
+                ii++;
+            }
+            ////////////////
             float feature = 0;
-            String featureStr = "";
             int target = 0;
             for (Data.Page page : DeserializeData.iterableAnnotations(fISOutlines)) {
                 qId = page.getPageId();
-                for (Data.Paragraph paragraph : DeserializeData.iterableParagraphs(fISParags)) {
-                    dId = paragraph.getParaId();
+//                for (Data.Paragraph paragraph : DeserializeData.iterableParagraphs(fISParags)) {
+                for (int m = 0; m < paraSize; m++){
+                    dId = docID[m];
+                    String featureStr = "";
                     for (int i = 0; i < runfileFuncs.length; i++) {
                         rank = rankParser(runfileFuncs[i], dId, qId);
                         if (rank > 0) {
