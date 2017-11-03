@@ -1,0 +1,13 @@
+$ java -jar bin/RankLib.jar -load outputs/pa5/T1RLTrainedModel -test outputs/pa5/T1RLFeatures -qrel outputs/pa5/qrelfile -metric2t MAP -tolerance .001 -idv outputs/pa5/T1MesearmentOutput
+
+[+] General Parameters:
+Error in APScorer::loadExternalRelevanceJudgment(): java.io.FileNotFoundException: outputs/pa5/qrelfile (No such file or directory)
+Error in APScorer::loadExternalRelevanceJudgment(): java.io.FileNotFoundException: outputs/pa5/qrelfile (No such file or directory)
+Model file:     outputs/pa5/T1RLTrainedModel
+Feature normalization: No
+Test metric:    MAP
+Model:          Coordinate Ascent
+Reading feature file [outputs/pa5/T1RLFeatures]... [Done.]
+(1 ranked lists, 12 entries read)
+MAP on test data: 0.0
+Per-ranked list performance saved to: outputs/pa5/T1MesearmentOutput
