@@ -1,0 +1,8 @@
+
+java -jar bin/RankLib.jar -train outputs/pa5/RankLibFeatures -ranker 4 -metric2t MAP -tolerance .001 -save outputs/pa5/RankLibModel -qrel outputs/pa5/qrelfile
+
+
+java -jar bin/RankLib.jar -load outputs/pa5/T1RLTrainedModel -rank outputs/pa5/T1RLFeatures -score outputs/pa5/T1ScoreModel
+
+
+java -jar bin/RankLib.jar -load outputs/pa5/T1RLTrainedModel -test outputs/pa5/T1RLFeatures -qrel outputs/pa5/qrelfile -metric2t MAP -tolerance .001 -idv outputs/pa5/T1MesearmentOutput
