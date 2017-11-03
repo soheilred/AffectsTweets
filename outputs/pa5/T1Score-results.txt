@@ -1,0 +1,8 @@
+$ java -jar bin/RankLib.jar -load outputs/pa5/T1RLTrainedModel -rank outputs/pa5/T1RLFeatures -score outputs/pa5/T1ScoreModel
+
+[+] General Parameters:
+Model file:     outputs/pa5/T1RLTrainedModel
+Feature normalization: No
+Model:          Coordinate Ascent
+Reading feature file [outputs/pa5/T1RLFeatures]... [Done.]
+(1 ranked lists, 12 entries read)
