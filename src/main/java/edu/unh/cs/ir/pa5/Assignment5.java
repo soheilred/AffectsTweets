@@ -64,7 +64,7 @@ public class Assignment5 {
         try {
             BufferedWriter bw = new BufferedWriter(new FileWriter("RankLibFileTask2"));
 
-            String[] runfileFuncs = {"outputs/pa5/lnc_ltn", "outputs/pa5/bnn_bnn", "outputs/pa5/LM_U", "outputs/pa5/U_JM", "outputs/pa5/U_DS"};
+            String[] runfileFuncs = {"outputs/pa5/T2rankfiles/lnc_ltn", "outputs/pa5/T2rankfiles/bnn_bnn", "outputs/pa5/T2rankfiles/LM_U", "outputs/pa5/T2rankfiles/U_JM", "outputs/pa5/T2rankfiles/U_DS"};
 
             ArrayList<String> rankLibStr = new ArrayList<>();
             int rank = 0;
@@ -150,7 +150,7 @@ public class Assignment5 {
     }
 
     public static void main(String[] args) throws FileNotFoundException, CborException {
-        int taskNumber = 1; //TODO: change this to run for the desired task
+        int taskNumber = 2; //TODO: change this to run for the desired task
         Assignment5 a5 = new Assignment5();
 
         if (taskNumber == 1) {
