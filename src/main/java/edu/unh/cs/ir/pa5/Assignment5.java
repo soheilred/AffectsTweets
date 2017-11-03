@@ -19,9 +19,9 @@ public class Assignment5 {
         String dId;
 
         try {
-            BufferedWriter bw = new BufferedWriter(new FileWriter("outputs/pa5/RankLibFileTask1"));
+            BufferedWriter bw = new BufferedWriter(new FileWriter("outputs/pa5/T1RLFeatures"));
 
-            String[] runfileFuncs = {"outputs/pa5/LM_U", "outputs/pa5/U_JM", "outputs/pa5/lnc_ltn", "outputs/pa5/bnn_bnn"};
+            String[] runfileFuncs = {"outputs/pa5/rankfile1", "outputs/pa5/rankfile2", "outputs/pa5/rankfile3", "outputs/pa5/rankfile4"};
 
             ArrayList<String> rankLibStr = new ArrayList<>();
             int rank = 0;
@@ -41,7 +41,7 @@ public class Assignment5 {
                         feature = 0;
                     }
                     featureStr = featureStr.concat(" " + (i + 1) + ":" + String.format("%.2f", feature));
-                    target = targetParser("outputs/pa5/U_DS", dId, qId);
+                    target = targetParser("outputs/pa5/T1qrelfile", dId, qId);
                 }
                 rankLibStr.add(target + " qid:" + qId + featureStr + " # " + dId);
             }
