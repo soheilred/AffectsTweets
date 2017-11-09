@@ -22,13 +22,14 @@ public class AffectsProj {
     public static void main(String[] args) throws FileNotFoundException, CborException {
         List<String> tIdList = new ArrayList<>();
         Map<String, String> tMap = new HashMap<>();
+        int resultsNum = 1;
+        String resultString;
 
         try {
             // make the run file:
             // run_file_default4
             // run_file_custom4
             BufferedWriter bW = new BufferedWriter(new FileWriter("./AffectsTweets/affects-runfile"));
-            String resultString;
 
             // build a lucene index to retrieve paragraphs
             System.out.println("RebuildIndexes");
@@ -49,20 +50,15 @@ public class AffectsProj {
             for (String id : tIdList) {
                 String query = tMap.get(id);
                 System.out.println("\nThe query is: " + query);
-                TopDocs topDocs = se.performSearch(query, 10);
+                TopDocs topDocs = se.performSearch(query, resultsNum);
 
-                System.out.println("Top " + 100 + " results found: " + topDocs.totalHits);
+                System.out.println("Top " + resultsNum + " results found: " + topDocs.totalHits);
                 ScoreDoc[] hits = topDocs.scoreDocs;
 
-                //id[tab]tweet[tab]emotion[tab]score
-                int rank = 0;
                 for (ScoreDoc scoreDoc : hits) {
                     Document doc = se.getDocument(scoreDoc.doc);
-                    resultString = id + " Q0 " + doc.get("id")
-                            //+ " " + doc.get("content")
-                            + " " + ++rank
-                            + " " + scoreDoc.score + ""
-                            + " Team3-Project";
+                    //id[tab]tweet[tab]emotion[tab]score
+                    resultString = id + "\t" + query + "\t" + "joy" + "\t" + scoreDoc.score;
                     bW.write(resultString);
                     bW.newLine();
                     System.out.println(resultString);
@@ -70,13 +66,13 @@ public class AffectsProj {
             }
             bW.close();
         } catch (Exception e) {
-            System.out.println("Exception caught.\n");
+            System.out.println("Main Exception caught.\n" + e.getMessage() + "\n" + e.toString());
         }
 
     }
 
-//id[tab]tweet[tab]emotion[tab]score
-    private static void tweetsParser(List<String> list, Map<String,String> map, String filepath) {
+    //id[tab]tweet[tab]emotion[tab]score
+    private static void tweetsParser(List<String> list, Map<String, String> map, String filepath) {
         try {
             BufferedReader br = new BufferedReader(new FileReader(filepath));
             String line;
@@ -84,11 +80,11 @@ public class AffectsProj {
             while ((line = br.readLine()) != null) {
                 linesArray = line.split("\t");
                 list.add(linesArray[0]);
-                map.put(linesArray[0],linesArray[1]);
+                map.put(linesArray[0], linesArray[1]);
             }
             br.close();
         } catch (Exception e) {
-            System.out.println("Target Parser Exception Caught." + e.toString() + "\n");
+            System.out.println("Tweets Parser Exception Caught." + e.toString() + "\n");
         }
     }
 
