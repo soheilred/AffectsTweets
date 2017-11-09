@@ -20,7 +20,7 @@ public class IndexSearcherAff {
     private QueryParser parser = null;
 
     public IndexSearcherAff(SimilarityBase similarity) throws IOException {
-        searcher = new IndexSearcher(DirectoryReader.open(FSDirectory.open(new File("index-directory5").toPath())));
+        searcher = new IndexSearcher(DirectoryReader.open(FSDirectory.open(new File("index-directory-affects").toPath())));
         if (similarity != null) {
             searcher.setSimilarity(similarity);
         }
