@@ -29,7 +29,7 @@ public class IndexSearcherAff {
 
     public TopDocs performSearch(String queryString, int n)
             throws IOException, ParseException {
-        Query query = parser.parse(queryString);
+        Query query = parser.parse(QueryParser.escape(queryString));
         return searcher.search(query, n);
     }
 

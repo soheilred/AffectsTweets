@@ -59,6 +59,7 @@ public class AffectsProj {
                     Document doc = se.getDocument(scoreDoc.doc);
                     //id[tab]tweet[tab]emotion[tab]score
                     resultString = id + "\t" + query + "\t" + "joy" + "\t" + scoreDoc.score;
+
                     bW.write(resultString);
                     bW.newLine();
                     System.out.println(resultString);
