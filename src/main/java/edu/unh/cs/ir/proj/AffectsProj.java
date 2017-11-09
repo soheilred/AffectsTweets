@@ -3,12 +3,15 @@ package edu.unh.cs.ir.proj;
 import co.nstant.in.cbor.CborException;
 import edu.unh.cs.ir.pa4.IndexSearcher4;
 import edu.unh.cs.ir.pa4.Indexer4;
-import edu.unh.cs.ir.similarities.LMLaplaceSimilarity;
+import edu.unh.cs.ir.similarities.*;
 import edu.unh.cs.treccar.Data;
 import edu.unh.cs.treccar.read_data.DeserializeData;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.search.similarities.LMDirichletSimilarity;
+import org.apache.lucene.search.similarities.LMJelinekMercerSimilarity;
+import org.apache.lucene.search.similarities.SimilarityBase;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -23,51 +26,86 @@ public class AffectsProj {
         List<String> tIdList = new ArrayList<>();
         Map<String, String> tMap = new HashMap<>();
         int resultsNum = 1;
+        List<Integer> scoreList = new ArrayList<>();
         String resultString;
 
-        try {
-            // make the run file:
-            // run_file_default4
-            // run_file_custom4
-            BufferedWriter bW = new BufferedWriter(new FileWriter("./AffectsTweets/affects-runfile"));
+        String[] simsName = {
+                "runfile-affects-laplace",
+                "runfile-affects-dirichlet",
+                "runfile-affects-jelinekmercer",
+                "runfile-affects-lnc-ltn",
+                "runfile-affects-bnn-bnn",
+                "runfile-affects-anc-apc"
+        };
+        SimilarityBase[] simsIndex = {
+                null,
+                null,
+                null,
+                new LNCSimilarity(),
+                new BNNSimilarity(),
+                new ANCSimilarity()
 
-            // build a lucene index to retrieve paragraphs
-            System.out.println("RebuildIndexes");
-            IndexerAff indexer = new IndexerAff();
-            indexer.buildIndexes("./AffectsTweets/joy_database", null); //pass the specific similarity to indexer
-            System.out.println("RebuildIndexes done");
+        };
+        SimilarityBase[] simsQuery = {
+                new LMLaplaceSimilarity(1),
+                new LMDirichletSimilarity(1000f),
+                new LMJelinekMercerSimilarity(0.9f),
+                new LTNSimilarity(),
+                new BNNSimilarity(),
+                new APCSimilarity()
+        };
 
-            // perform search on the query
-            // and retrieve the top 100 result
-            System.out.println("\n--------------\nPerformSearch:");
 
-            //new LMDirichletSimilarity(1000f)
-            //new LMJelinekMercerSimilarity(0.9f)
-            IndexSearcherAff se = new IndexSearcherAff(new LMLaplaceSimilarity(1));
+        for (int i = 0; i < simsName.length; i++) {
 
-            tweetsParser(tIdList, tMap, "./AffectsTweets/EI-reg-en_joy_train.txt");
+            try {
+                // make the run file:
+                // run_file_default4
+                // run_file_custom4
+                BufferedWriter bW = new BufferedWriter(new FileWriter("./AffectsTweets/" + simsName[i]));
 
-            for (String id : tIdList) {
-                String query = tMap.get(id);
-                System.out.println("\nThe query is: " + query);
-                TopDocs topDocs = se.performSearch(query, resultsNum);
+                // build a lucene index to retrieve paragraphs
+                System.out.println("RebuildIndexes");
+                IndexerAff indexer = new IndexerAff();
+                indexer.buildIndexes("./AffectsTweets/joy_database", simsIndex[i]); //pass the specific similarity to indexer
+                System.out.println("RebuildIndexes done");
 
-                System.out.println("Top " + resultsNum + " results found: " + topDocs.totalHits);
-                ScoreDoc[] hits = topDocs.scoreDocs;
+                // perform search on the query
+                // and retrieve the top 100 result
+                System.out.println("\n--------------\nPerformSearch:");
 
-                for (ScoreDoc scoreDoc : hits) {
-                    Document doc = se.getDocument(scoreDoc.doc);
-                    //id[tab]tweet[tab]emotion[tab]score
-                    resultString = id + "\t" + query + "\t" + "joy" + "\t" + scoreDoc.score;
+                IndexSearcherAff se = new IndexSearcherAff(simsQuery[i]);
 
-                    bW.write(resultString);
-                    bW.newLine();
-                    System.out.println(resultString);
+                tweetsParser(tIdList, tMap, "./AffectsTweets/EI-reg-en_joy_train.txt");
+
+                double maxScore = 0;
+
+                for (String id : tIdList) {
+                    String query = tMap.get(id);
+                    System.out.println("\nThe query is: " + query);
+                    TopDocs topDocs = se.performSearch(query, resultsNum);
+
+                    System.out.println("Top " + resultsNum + " results found: " + topDocs.totalHits);
+                    ScoreDoc[] hits = topDocs.scoreDocs;
+
+                    for (ScoreDoc scoreDoc : hits) {
+                        if (maxScore < scoreDoc.score) {
+                            maxScore = scoreDoc.score;
+                        }
+                    }
+                    for (ScoreDoc scoreDoc : hits) {
+                        //id[tab]tweet[tab]emotion[tab]score
+                        resultString = id + "\t" + query + "\t" + "joy" + "\t" + (maxScore == 0 ? 0 : scoreDoc.score / maxScore);
+                        scoreList.add(scoreDoc.doc);
+                        bW.write(resultString);
+                        bW.newLine();
+                        System.out.println(resultString);
+                    }
                 }
+                bW.close();
+            } catch (Exception e) {
+                System.out.println("Main Exception caught.\n" + e.getMessage() + "\n" + e.toString());
             }
-            bW.close();
-        } catch (Exception e) {
-            System.out.println("Main Exception caught.\n" + e.getMessage() + "\n" + e.toString());
         }
 
     }
