@@ -1,168 +1,90 @@
 package edu.unh.cs.ir.proj;
 
 import co.nstant.in.cbor.CborException;
+import edu.unh.cs.ir.pa4.IndexSearcher4;
+import edu.unh.cs.ir.pa4.Indexer4;
+import edu.unh.cs.ir.similarities.LMLaplaceSimilarity;
 import edu.unh.cs.treccar.Data;
 import edu.unh.cs.treccar.read_data.DeserializeData;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.TopDocs;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class AffectsProj {
 
-    public void task1() {
-        String qId;
-        String dId;
+
+    public static void main(String[] args) throws FileNotFoundException, CborException {
+        Map<String, String> queriesMap = new HashMap<>();
+        List<String> qIdList = new ArrayList<>();
 
         try {
-            BufferedWriter bw = new BufferedWriter(new FileWriter("outputs/pa5/T1RLFeatures"));
+            // make the run file:
+            // run_file_default4
+            // run_file_custom4
+            BufferedWriter bW = new BufferedWriter(new FileWriter("dric_run_file"));
+            String resultString;
 
-            String[] runfileFuncs = {"outputs/pa5/rankfile1", "outputs/pa5/rankfile2", "outputs/pa5/rankfile3", "outputs/pa5/rankfile4"};
-
-            ArrayList<String> rankLibStr = new ArrayList<>();
-            int rank = 0;
-
-            float feature = 0;
-            String featureStr = "";
-            int target = 0;
-            qId = "Q";
-            for (int j = 0; j < 12; j++) {
-                dId = "D" + String.valueOf(j + 1);
-                featureStr = "";
-                for (int i = 0; i < runfileFuncs.length; i++) {
-                    rank = rankParser(runfileFuncs[i], dId, qId);
-                    if (rank > 0) {
-                        feature = (1 / (float) rank);
-                    } else {
-                        feature = 0;
-                    }
-                    featureStr = featureStr.concat(" " + (i + 1) + ":" + String.format("%.2f", feature));
-                    target = targetParser("outputs/pa5/T1qrelfile", dId, qId);
-                }
-                rankLibStr.add(target + " qid:" + qId + featureStr + " # " + dId);
-            }
-
-            for (String str : rankLibStr) {
-                bw.write(str + "\n");
-            }
-            bw.close();
-        } catch (Exception e) {
-            System.out.println("Exception caught." + e.toString() + "\n");
-        }
-
-
-    }
-
-    public void task2() {
-        String qId;
-        String dId;
-
-        try {
-            BufferedWriter bw = new BufferedWriter(new FileWriter("RankLibFileTask2"));
-
-            String[] runfileFuncs = {"outputs/pa5/T2rankfiles/lnc_ltn", "outputs/pa5/T2rankfiles/bnn_bnn", "outputs/pa5/T2rankfiles/LM_U", "outputs/pa5/T2rankfiles/U_JM", "outputs/pa5/T2rankfiles/U_DS"};
-
-            ArrayList<String> rankLibStr = new ArrayList<>();
-            int rank = 0;
             // read the queries' file
+            System.setProperty("file.encoding", "UTF-8");
             File fOutlines = new File("./test200/train.test200.cbor.outlines");
-            final FileInputStream fISOutlines = new FileInputStream(fOutlines);
+            final FileInputStream FISOutlines = new FileInputStream(fOutlines);
 
             // read the paragraphs' file
+            System.setProperty("file.encoding", "UTF-8");
             File fParags = new File("./test200/train.test200.cbor.paragraphs");
             final FileInputStream fISParags = new FileInputStream(fParags);
 
-            ////////////////
-            int ii = 0;
-            int paraSize = 4689;
-            String[] docID = new String[paraSize];
-            for (Data.Paragraph paragraph : DeserializeData.iterableParagraphs(fISParags)) {
-                docID[ii] = paragraph.getParaId();
-                ii++;
+            // build a lucene index to retrieve paragraphs
+            System.out.println("RebuildIndexes");
+            Indexer4 indexer = new Indexer4();
+            indexer.buildIndexes(fISParags, null); //pass the specific similarity to indexer
+            System.out.println("RebuildIndexes done");
+
+            // perform search on the query
+            // and retrieve the top 100 result
+            System.out.println("\n--------------\nPerformSearch:");
+
+            //new LMDirichletSimilarity(1000f)
+            //new LMJelinekMercerSimilarity(0.9f)
+            IndexSearcher4 se = new IndexSearcher4(new LMLaplaceSimilarity(1)); //
+
+            for (Data.Page page : DeserializeData.iterableAnnotations(FISOutlines)) {
+                // Index all Accommodation entries
+                queriesMap.put(page.getPageId(), page.getPageName());
+                qIdList.add(page.getPageId());
             }
-            ////////////////
-            float feature = 0;
-            int target = 0;
-            for (Data.Page page : DeserializeData.iterableAnnotations(fISOutlines)) {
-                qId = page.getPageId();
-//                for (Data.Paragraph paragraph : DeserializeData.iterableParagraphs(fISParags)) {
-                for (int m = 0; m < paraSize; m++){
-                    dId = docID[m];
-                    String featureStr = "";
-                    for (int i = 0; i < runfileFuncs.length; i++) {
-                        rank = rankParser(runfileFuncs[i], dId, qId);
-                        if (rank > 0) {
-                            feature = (1 / (float) rank);
-                        } else {
-                            feature = 0;
-                        }
-                        featureStr = featureStr.concat(" " + (i + 1) + ":" + String.format("%.2f", feature));
-                        target = targetParser("./test200/train.test200.cbor.article.qrels", qId, dId);
-                    }
-                    rankLibStr.add(target + " qid:" + qId + featureStr + " # " + dId);
+            for (String id : qIdList) {
+                String query = queriesMap.get(id);
+                System.out.println("\nThe query is: " + query);
+                TopDocs topDocs = se.performSearch(query, 10);
+
+                System.out.println("Top " + 100 + " results found: " + topDocs.totalHits);
+                ScoreDoc[] hits = topDocs.scoreDocs;
+
+                int rank = 0;
+                for (ScoreDoc scoreDoc : hits) {
+                    Document doc = se.getDocument(scoreDoc.doc);
+                    resultString = id + " Q0 " + doc.get("id")
+                            //+ " " + doc.get("content")
+                            + " " + ++rank
+                            + " " + scoreDoc.score + ""
+                            + " Team3-Practical";
+                    bW.write(resultString);
+                    bW.newLine();
+                    System.out.println(resultString);
                 }
             }
-
-            for (String str : rankLibStr) {
-                bw.write(str + "\n");
-            }
-            bw.close();
+            bW.close();
         } catch (Exception e) {
-            System.out.println("Exception caught." + e.toString() + "\n");
+            System.out.println("Exception caught.\n");
         }
 
-    }
-
-    public int rankParser(String rf, String doc, String query) {
-        int rank = 0;
-
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(rf));
-            String line;
-            String[] linesArray;
-            while ((line = br.readLine()) != null) {
-                linesArray = line.split(" ");
-                if (linesArray[0].equals(query) && linesArray[2].equals(doc)) {
-                    rank = Integer.parseInt(linesArray[3]);
-                    break;
-                }
-            }
-
-            br.close();
-        } catch (Exception e) {
-            System.out.println("Run File Parser Exception Caught." + e.toString() + "\n");
-        }
-        return rank;
-    }
-
-    public int targetParser(String qrelFile, String doc, String query) {
-        int target = 0;
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(qrelFile));
-            String line;
-            String[] linesArray;
-            while ((line = br.readLine()) != null) {
-                linesArray = line.split(" ");
-                if (linesArray[0].equals(query) && linesArray[2].equals(doc)) {
-                    target = 1;
-                    break;
-                }
-            }
-            br.close();
-        } catch (Exception e) {
-            System.out.println("Target Parser Exception Caught." + e.toString() + "\n");
-        }
-        return target;
-    }
-
-    public static void main(String[] args) throws FileNotFoundException, CborException {
-        int taskNumber = 2; //TODO: change this to run for the desired task
-        AffectsProj a5 = new AffectsProj();
-
-        if (taskNumber == 1) {
-            a5.task1();
-        } else {
-            a5.task2();
-        }
     }
 
 }
