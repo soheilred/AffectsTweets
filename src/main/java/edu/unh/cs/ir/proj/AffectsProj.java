@@ -32,18 +32,13 @@ public class AffectsProj {
 
             // read the queries' file
             System.setProperty("file.encoding", "UTF-8");
-            File fOutlines = new File("./test200/train.test200.cbor.outlines");
+            File fOutlines = new File("./AffectsTweets/EI-reg-en_joy_train.txt");
             final FileInputStream FISOutlines = new FileInputStream(fOutlines);
-
-            // read the paragraphs' file
-            System.setProperty("file.encoding", "UTF-8");
-            File fParags = new File("./test200/train.test200.cbor.paragraphs");
-            final FileInputStream fISParags = new FileInputStream(fParags);
 
             // build a lucene index to retrieve paragraphs
             System.out.println("RebuildIndexes");
-            Indexer4 indexer = new Indexer4();
-            indexer.buildIndexes(fISParags, null); //pass the specific similarity to indexer
+            IndexerAff indexer = new IndexerAff();
+            indexer.buildIndexes("./AffectsTweets/joy_database", null); //pass the specific similarity to indexer
             System.out.println("RebuildIndexes done");
 
             // perform search on the query
@@ -52,7 +47,7 @@ public class AffectsProj {
 
             //new LMDirichletSimilarity(1000f)
             //new LMJelinekMercerSimilarity(0.9f)
-            IndexSearcher4 se = new IndexSearcher4(new LMLaplaceSimilarity(1)); //
+            IndexSearcherAff se = new IndexSearcherAff(new LMLaplaceSimilarity(1)); //
 
             for (Data.Page page : DeserializeData.iterableAnnotations(FISOutlines)) {
                 // Index all Accommodation entries
@@ -67,6 +62,8 @@ public class AffectsProj {
                 System.out.println("Top " + 100 + " results found: " + topDocs.totalHits);
                 ScoreDoc[] hits = topDocs.scoreDocs;
 
+
+                //id[tab]tweet[tab]emotion[tab]score
                 int rank = 0;
                 for (ScoreDoc scoreDoc : hits) {
                     Document doc = se.getDocument(scoreDoc.doc);
@@ -74,7 +71,7 @@ public class AffectsProj {
                             //+ " " + doc.get("content")
                             + " " + ++rank
                             + " " + scoreDoc.score + ""
-                            + " Team3-Practical";
+                            + " Team3-Project";
                     bW.write(resultString);
                     bW.newLine();
                     System.out.println(resultString);

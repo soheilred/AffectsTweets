@@ -18,6 +18,9 @@ import org.apache.lucene.store.FSDirectory;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 
 public class IndexerAff {
@@ -27,9 +30,9 @@ public class IndexerAff {
 
     private IndexWriter indexWriter;
 
-    public void buildIndexes(FileInputStream fileInputStream, SimilarityBase similarity) throws IOException, CborException {
-        for (Data.Paragraph paragraph : DeserializeData.iterableParagraphs(fileInputStream)) {
-            // Index all Accommodation entries
+    public void buildIndexes(String path, SimilarityBase similarity) throws IOException, CborException {
+        String text = new String(Files.readAllBytes(Paths.get(path)), StandardCharsets.UTF_8);
+//        for (Data.Paragraph paragraph : DeserializeData.iterableParagraphs(fileInputStream)) {
             if (indexWriter == null) {
                 Directory indexDir = FSDirectory.open(new File("index-directory-affects").toPath());
                 IndexWriterConfig config = new IndexWriterConfig(new StandardAnalyzer());
@@ -41,12 +44,11 @@ public class IndexerAff {
             IndexWriter writer = indexWriter;
 
             Document doc = new Document();
-            doc.add(new StringField("id", paragraph.getParaId(), Field.Store.YES));
-            doc.add(new TextField("content", paragraph.getTextOnly(), Field.Store.YES));
-//            System.out.println(doc.toString());
+            doc.add(new StringField("id", "1", Field.Store.YES));
+            doc.add(new TextField("content", text, Field.Store.YES));
 
-            writer.updateDocument(new Term("id", paragraph.getParaId()), doc);
-        }
+            writer.updateDocument(new Term("id", "1"), doc);
+//        }
         System.out.print(indexWriter.numDocs());
 
         if (indexWriter != null) {
