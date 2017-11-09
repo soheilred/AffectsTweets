@@ -1,0 +1,168 @@
+package edu.unh.cs.ir.proj;
+
+import co.nstant.in.cbor.CborException;
+import edu.unh.cs.treccar.Data;
+import edu.unh.cs.treccar.read_data.DeserializeData;
+
+import java.io.*;
+import java.util.ArrayList;
+
+public class AffectsProj {
+
+    public void task1() {
+        String qId;
+        String dId;
+
+        try {
+            BufferedWriter bw = new BufferedWriter(new FileWriter("outputs/pa5/T1RLFeatures"));
+
+            String[] runfileFuncs = {"outputs/pa5/rankfile1", "outputs/pa5/rankfile2", "outputs/pa5/rankfile3", "outputs/pa5/rankfile4"};
+
+            ArrayList<String> rankLibStr = new ArrayList<>();
+            int rank = 0;
+
+            float feature = 0;
+            String featureStr = "";
+            int target = 0;
+            qId = "Q";
+            for (int j = 0; j < 12; j++) {
+                dId = "D" + String.valueOf(j + 1);
+                featureStr = "";
+                for (int i = 0; i < runfileFuncs.length; i++) {
+                    rank = rankParser(runfileFuncs[i], dId, qId);
+                    if (rank > 0) {
+                        feature = (1 / (float) rank);
+                    } else {
+                        feature = 0;
+                    }
+                    featureStr = featureStr.concat(" " + (i + 1) + ":" + String.format("%.2f", feature));
+                    target = targetParser("outputs/pa5/T1qrelfile", dId, qId);
+                }
+                rankLibStr.add(target + " qid:" + qId + featureStr + " # " + dId);
+            }
+
+            for (String str : rankLibStr) {
+                bw.write(str + "\n");
+            }
+            bw.close();
+        } catch (Exception e) {
+            System.out.println("Exception caught." + e.toString() + "\n");
+        }
+
+
+    }
+
+    public void task2() {
+        String qId;
+        String dId;
+
+        try {
+            BufferedWriter bw = new BufferedWriter(new FileWriter("RankLibFileTask2"));
+
+            String[] runfileFuncs = {"outputs/pa5/T2rankfiles/lnc_ltn", "outputs/pa5/T2rankfiles/bnn_bnn", "outputs/pa5/T2rankfiles/LM_U", "outputs/pa5/T2rankfiles/U_JM", "outputs/pa5/T2rankfiles/U_DS"};
+
+            ArrayList<String> rankLibStr = new ArrayList<>();
+            int rank = 0;
+            // read the queries' file
+            File fOutlines = new File("./test200/train.test200.cbor.outlines");
+            final FileInputStream fISOutlines = new FileInputStream(fOutlines);
+
+            // read the paragraphs' file
+            File fParags = new File("./test200/train.test200.cbor.paragraphs");
+            final FileInputStream fISParags = new FileInputStream(fParags);
+
+            ////////////////
+            int ii = 0;
+            int paraSize = 4689;
+            String[] docID = new String[paraSize];
+            for (Data.Paragraph paragraph : DeserializeData.iterableParagraphs(fISParags)) {
+                docID[ii] = paragraph.getParaId();
+                ii++;
+            }
+            ////////////////
+            float feature = 0;
+            int target = 0;
+            for (Data.Page page : DeserializeData.iterableAnnotations(fISOutlines)) {
+                qId = page.getPageId();
+//                for (Data.Paragraph paragraph : DeserializeData.iterableParagraphs(fISParags)) {
+                for (int m = 0; m < paraSize; m++){
+                    dId = docID[m];
+                    String featureStr = "";
+                    for (int i = 0; i < runfileFuncs.length; i++) {
+                        rank = rankParser(runfileFuncs[i], dId, qId);
+                        if (rank > 0) {
+                            feature = (1 / (float) rank);
+                        } else {
+                            feature = 0;
+                        }
+                        featureStr = featureStr.concat(" " + (i + 1) + ":" + String.format("%.2f", feature));
+                        target = targetParser("./test200/train.test200.cbor.article.qrels", qId, dId);
+                    }
+                    rankLibStr.add(target + " qid:" + qId + featureStr + " # " + dId);
+                }
+            }
+
+            for (String str : rankLibStr) {
+                bw.write(str + "\n");
+            }
+            bw.close();
+        } catch (Exception e) {
+            System.out.println("Exception caught." + e.toString() + "\n");
+        }
+
+    }
+
+    public int rankParser(String rf, String doc, String query) {
+        int rank = 0;
+
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(rf));
+            String line;
+            String[] linesArray;
+            while ((line = br.readLine()) != null) {
+                linesArray = line.split(" ");
+                if (linesArray[0].equals(query) && linesArray[2].equals(doc)) {
+                    rank = Integer.parseInt(linesArray[3]);
+                    break;
+                }
+            }
+
+            br.close();
+        } catch (Exception e) {
+            System.out.println("Run File Parser Exception Caught." + e.toString() + "\n");
+        }
+        return rank;
+    }
+
+    public int targetParser(String qrelFile, String doc, String query) {
+        int target = 0;
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(qrelFile));
+            String line;
+            String[] linesArray;
+            while ((line = br.readLine()) != null) {
+                linesArray = line.split(" ");
+                if (linesArray[0].equals(query) && linesArray[2].equals(doc)) {
+                    target = 1;
+                    break;
+                }
+            }
+            br.close();
+        } catch (Exception e) {
+            System.out.println("Target Parser Exception Caught." + e.toString() + "\n");
+        }
+        return target;
+    }
+
+    public static void main(String[] args) throws FileNotFoundException, CborException {
+        int taskNumber = 2; //TODO: change this to run for the desired task
+        AffectsProj a5 = new AffectsProj();
+
+        if (taskNumber == 1) {
+            a5.task1();
+        } else {
+            a5.task2();
+        }
+    }
+
+}
