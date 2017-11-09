@@ -20,20 +20,15 @@ public class AffectsProj {
 
 
     public static void main(String[] args) throws FileNotFoundException, CborException {
-        Map<String, String> queriesMap = new HashMap<>();
-        List<String> qIdList = new ArrayList<>();
+        List<String> tIdList = new ArrayList<>();
+        Map<String, String> tMap = new HashMap<>();
 
         try {
             // make the run file:
             // run_file_default4
             // run_file_custom4
-            BufferedWriter bW = new BufferedWriter(new FileWriter("dric_run_file"));
+            BufferedWriter bW = new BufferedWriter(new FileWriter("./AffectsTweets/affects-runfile"));
             String resultString;
-
-            // read the queries' file
-            System.setProperty("file.encoding", "UTF-8");
-            File fOutlines = new File("./AffectsTweets/EI-reg-en_joy_train.txt");
-            final FileInputStream FISOutlines = new FileInputStream(fOutlines);
 
             // build a lucene index to retrieve paragraphs
             System.out.println("RebuildIndexes");
@@ -47,21 +42,17 @@ public class AffectsProj {
 
             //new LMDirichletSimilarity(1000f)
             //new LMJelinekMercerSimilarity(0.9f)
-            IndexSearcherAff se = new IndexSearcherAff(new LMLaplaceSimilarity(1)); //
+            IndexSearcherAff se = new IndexSearcherAff(new LMLaplaceSimilarity(1));
 
-            for (Data.Page page : DeserializeData.iterableAnnotations(FISOutlines)) {
-                // Index all Accommodation entries
-                queriesMap.put(page.getPageId(), page.getPageName());
-                qIdList.add(page.getPageId());
-            }
-            for (String id : qIdList) {
-                String query = queriesMap.get(id);
+            tweetsParser(tIdList, tMap, "./AffectsTweets/EI-reg-en_joy_train.txt");
+
+            for (String id : tIdList) {
+                String query = tMap.get(id);
                 System.out.println("\nThe query is: " + query);
                 TopDocs topDocs = se.performSearch(query, 10);
 
                 System.out.println("Top " + 100 + " results found: " + topDocs.totalHits);
                 ScoreDoc[] hits = topDocs.scoreDocs;
-
 
                 //id[tab]tweet[tab]emotion[tab]score
                 int rank = 0;
@@ -82,6 +73,23 @@ public class AffectsProj {
             System.out.println("Exception caught.\n");
         }
 
+    }
+
+//id[tab]tweet[tab]emotion[tab]score
+    private static void tweetsParser(List<String> list, Map<String,String> map, String filepath) {
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(filepath));
+            String line;
+            String[] linesArray;
+            while ((line = br.readLine()) != null) {
+                linesArray = line.split("\t");
+                list.add(linesArray[0]);
+                map.put(linesArray[0],linesArray[1]);
+            }
+            br.close();
+        } catch (Exception e) {
+            System.out.println("Target Parser Exception Caught." + e.toString() + "\n");
+        }
     }
 
 }
