@@ -93,13 +93,20 @@ public class AffectsProj {
                             maxScore = scoreDoc.score;
                         }
                     }
+                    boolean comeIn = true;
                     for (ScoreDoc scoreDoc : hits) {
+                        comeIn = false;
                         //id[tab]tweet[tab]emotion[tab]score
                         resultString = id + "\t" + query + "\t" + "joy" + "\t" + (maxScore == 0 ? 0 : scoreDoc.score / maxScore);
                         scoreList.add(scoreDoc.doc);
                         bW.write(resultString);
                         bW.newLine();
                         System.out.println(resultString);
+                    }
+                    if (comeIn){
+                        resultString = id + "\t" + query + "\t" + "joy" + "\t" + 0.0;
+                        bW.write(resultString);
+                        bW.newLine();
                     }
                 }
                 bW.close();
