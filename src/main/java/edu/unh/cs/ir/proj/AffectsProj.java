@@ -123,8 +123,15 @@ public class AffectsProj {
                 System.out.println("Main Exception caught.\n" + e.getMessage() + "\n" + e.toString());
             }
         }
-        for (Map<String, Float> ranking: rankList){
-            System.out.print(ranking);
+
+        for (Map<String, Float> ranking : rankList) {
+//            for (Map.Entry<String, Float> score : ranking.entrySet()) {
+//                String key = score.getKey();
+//                Float value = score.getValue();
+//            }
+            for (int lineNum = 30000; lineNum < 31616; lineNum++) {
+                System.out.print(ranking.get(lineNum));
+            }
         }
 
     }
