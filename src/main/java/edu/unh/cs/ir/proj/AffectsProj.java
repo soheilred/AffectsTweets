@@ -23,7 +23,7 @@ public class AffectsProj {
         int resultsNum = 1;
 //        List<Integer> scoreList = new ArrayList<>();
         tweetsParser(tIdList, tMap, "./AffectsTweets/EI-reg-en_joy_train.txt");
-        List<List<Map<String, Float>>> rankList = new ArrayList<>();
+        List<Map<String, Float>> rankList = new ArrayList<>();
 
 
         String[] simsName = {
@@ -73,15 +73,15 @@ public class AffectsProj {
 
                 IndexSearcherAff se = new IndexSearcherAff(simsQuery[i], simsName[i]);
 
-                List<Map<String, Float>> scoreList = new ArrayList<>();
+//                List<Map<String, Float>> scoreList = new ArrayList<>();
 
 
                 double maxScore = 0;
                 String resultString;
 
+                Map<String, Float> scoresMap = new HashMap<>();
                 for (String id : tIdList) {
                     String query = tMap.get(id);
-                    Map<String, Float> scoresMap = new HashMap<>();
 //                    System.out.println("\nThe query is: " + query);
                     TopDocs topDocs = se.performSearch(query, resultsNum);
 
@@ -98,9 +98,9 @@ public class AffectsProj {
 //                        resultString = id + "\t" + query + "\t" + "joy" + "\t" + 0.0;
                         scoresMap.put(id, 0f);
                     }
-                    scoreList.add(scoresMap);
+//                    scoreList.add(scoresMap);
                 }
-                rankList.add(scoreList);
+                rankList.add(scoresMap);
 
 //                    bW.write(resultString);
 //                    bW.newLine();
@@ -123,9 +123,9 @@ public class AffectsProj {
                 System.out.println("Main Exception caught.\n" + e.getMessage() + "\n" + e.toString());
             }
         }
-        for (List ranking: rankList){
-
-        }
+//        for (List ranking: rankList){
+//
+//        }
 
     }
 
