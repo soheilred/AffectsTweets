@@ -30,24 +30,24 @@ public class IndexerAff {
 
     private IndexWriter indexWriter;
 
-    public void buildIndexes(String path, SimilarityBase similarity) throws IOException, CborException {
+    public void buildIndexes(String path, SimilarityBase similarity, String simsName) throws IOException, CborException {
         String text = new String(Files.readAllBytes(Paths.get(path)), StandardCharsets.UTF_8);
 //        for (Data.Paragraph paragraph : DeserializeData.iterableParagraphs(fileInputStream)) {
-            if (indexWriter == null) {
-                Directory indexDir = FSDirectory.open(new File("index-directory-affects").toPath());
-                IndexWriterConfig config = new IndexWriterConfig(new StandardAnalyzer());
-                if (similarity != null) {
-                    config.setSimilarity(similarity);
-                }
-                indexWriter = new IndexWriter(indexDir, config);
+        if (indexWriter == null) {
+            Directory indexDir = FSDirectory.open(new File("index-directory-affects/" + simsName).toPath());
+            IndexWriterConfig config = new IndexWriterConfig(new StandardAnalyzer());
+            if (similarity != null) {
+                config.setSimilarity(similarity);
             }
-            IndexWriter writer = indexWriter;
+            indexWriter = new IndexWriter(indexDir, config);
+        }
+        IndexWriter writer = indexWriter;
 
-            Document doc = new Document();
-            doc.add(new StringField("id", "1", Field.Store.YES));
-            doc.add(new TextField("content", text, Field.Store.YES));
+        Document doc = new Document();
+        doc.add(new StringField("id", "1", Field.Store.YES));
+        doc.add(new TextField("content", text, Field.Store.YES));
 
-            writer.updateDocument(new Term("id", "1"), doc);
+        writer.updateDocument(new Term("id", "1"), doc);
 //        }
         System.out.print(indexWriter.numDocs());
 

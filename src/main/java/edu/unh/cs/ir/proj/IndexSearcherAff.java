@@ -19,8 +19,12 @@ public class IndexSearcherAff {
     private IndexSearcher searcher = null;
     private QueryParser parser = null;
 
-    public IndexSearcherAff(SimilarityBase similarity) throws IOException {
-        searcher = new IndexSearcher(DirectoryReader.open(FSDirectory.open(new File("index-directory-affects").toPath())));
+
+    /*
+    * "index-directory-affects/" + simsName*/
+
+    public IndexSearcherAff(SimilarityBase similarity, String simsName) throws IOException {
+        searcher = new IndexSearcher(DirectoryReader.open(FSDirectory.open(new File("index-directory-affects/" + simsName).toPath())));
         if (similarity != null) {
             searcher.setSimilarity(similarity);
         }

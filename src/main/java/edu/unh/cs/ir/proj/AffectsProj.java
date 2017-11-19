@@ -30,12 +30,12 @@ public class AffectsProj {
         String resultString;
 
         String[] simsName = {
-                "runfile-affects-laplace",
-                "runfile-affects-dirichlet",
-                "runfile-affects-jelinekmercer",
-                "runfile-affects-lnc-ltn",
-                "runfile-affects-bnn-bnn",
-                "runfile-affects-anc-apc"
+                "laplace",
+                "dirichlet",
+                "jelinekmercer",
+                "lnc-ltn",
+                "bnn-bnn",
+                "anc-apc"
         };
         SimilarityBase[] simsIndex = {
                 null,
@@ -62,19 +62,19 @@ public class AffectsProj {
                 // make the run file:
                 // run_file_default4
                 // run_file_custom4
-                BufferedWriter bW = new BufferedWriter(new FileWriter("./AffectsTweets/" + simsName[i]));
+                BufferedWriter bW = new BufferedWriter(new FileWriter("./AffectsTweets/" + "runfile-affects-" + simsName[i]));
 
                 // build a lucene index to retrieve paragraphs
                 System.out.println("RebuildIndexes");
                 IndexerAff indexer = new IndexerAff();
-                indexer.buildIndexes("./AffectsTweets/joy_database", simsIndex[i]); //pass the specific similarity to indexer
+                indexer.buildIndexes("./AffectsTweets/joy_database", simsIndex[i], simsName[i]); //pass the specific similarity to indexer
                 System.out.println("RebuildIndexes done");
 
                 // perform search on the query
                 // and retrieve the top 100 result
                 System.out.println("\n--------------\nPerformSearch:");
 
-                IndexSearcherAff se = new IndexSearcherAff(simsQuery[i]);
+                IndexSearcherAff se = new IndexSearcherAff(simsQuery[i], simsName[i]);
 
                 tweetsParser(tIdList, tMap, "./AffectsTweets/EI-reg-en_joy_train.txt");
 
@@ -103,7 +103,7 @@ public class AffectsProj {
                         bW.newLine();
                         System.out.println(resultString);
                     }
-                    if (comeIn){
+                    if (comeIn) {
                         resultString = id + "\t" + query + "\t" + "joy" + "\t" + 0.0;
                         bW.write(resultString);
                         bW.newLine();
