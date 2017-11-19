@@ -27,7 +27,8 @@ public class AffectsProj {
         Map<String, String> tMap = new HashMap<>();
         int resultsNum = 1;
         List<Integer> scoreList = new ArrayList<>();
-        String resultString;
+        tweetsParser(tIdList, tMap, "./AffectsTweets/EI-reg-en_joy_train.txt");
+
 
         String[] simsName = {
                 "laplace",
@@ -76,16 +77,16 @@ public class AffectsProj {
 
                 IndexSearcherAff se = new IndexSearcherAff(simsQuery[i], simsName[i]);
 
-                tweetsParser(tIdList, tMap, "./AffectsTweets/EI-reg-en_joy_train.txt");
+
 
                 double maxScore = 0;
 
                 for (String id : tIdList) {
                     String query = tMap.get(id);
-                    System.out.println("\nThe query is: " + query);
+//                    System.out.println("\nThe query is: " + query);
                     TopDocs topDocs = se.performSearch(query, resultsNum);
 
-                    System.out.println("Top " + resultsNum + " results found: " + topDocs.totalHits);
+//                    System.out.println("Top " + resultsNum + " results found: " + topDocs.totalHits);
                     ScoreDoc[] hits = topDocs.scoreDocs;
 
                     for (ScoreDoc scoreDoc : hits) {
@@ -93,6 +94,8 @@ public class AffectsProj {
                             maxScore = scoreDoc.score;
                         }
                     }
+                    String resultString;
+
                     boolean comeIn = true;
                     for (ScoreDoc scoreDoc : hits) {
                         comeIn = false;
@@ -101,7 +104,8 @@ public class AffectsProj {
                         scoreList.add(scoreDoc.doc);
                         bW.write(resultString);
                         bW.newLine();
-                        System.out.println(resultString);
+//                        System.out.println(resultString);
+                        System.out.print(" , " + id);
                     }
                     if (comeIn) {
                         resultString = id + "\t" + query + "\t" + "joy" + "\t" + 0.0;
