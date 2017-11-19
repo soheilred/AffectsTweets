@@ -123,6 +123,9 @@ public class AffectsProj {
                 System.out.println("Main Exception caught.\n" + e.getMessage() + "\n" + e.toString());
             }
         }
+        for (List ranking: rankList){
+
+        }
 
     }
 
