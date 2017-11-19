@@ -49,7 +49,7 @@ public class IndexerAff {
 
         writer.updateDocument(new Term("id", "1"), doc);
 //        }
-        System.out.print(indexWriter.numDocs());
+        System.out.println("You have " + indexWriter.numDocs() + " docs indexed");
 
         if (indexWriter != null) {
             indexWriter.close();

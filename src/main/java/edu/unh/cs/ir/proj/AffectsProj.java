@@ -26,8 +26,9 @@ public class AffectsProj {
         List<String> tIdList = new ArrayList<>();
         Map<String, String> tMap = new HashMap<>();
         int resultsNum = 1;
-        List<Integer> scoreList = new ArrayList<>();
+//        List<Integer> scoreList = new ArrayList<>();
         tweetsParser(tIdList, tMap, "./AffectsTweets/EI-reg-en_joy_train.txt");
+        List<List<Map<String, Float>>> rankList = new ArrayList<>();
 
 
         String[] simsName = {
@@ -73,46 +74,55 @@ public class AffectsProj {
 
                 // perform search on the query
                 // and retrieve the top 100 result
-                System.out.println("\n--------------\nPerformSearch:");
+                System.out.println("--------------\nPerformSearch:");
 
                 IndexSearcherAff se = new IndexSearcherAff(simsQuery[i], simsName[i]);
 
+                List<Map<String, Float>> scoreList = new ArrayList<>();
 
 
                 double maxScore = 0;
+                String resultString;
 
                 for (String id : tIdList) {
                     String query = tMap.get(id);
+                    Map<String, Float> scoresMap = new HashMap<>();
 //                    System.out.println("\nThe query is: " + query);
                     TopDocs topDocs = se.performSearch(query, resultsNum);
 
 //                    System.out.println("Top " + resultsNum + " results found: " + topDocs.totalHits);
                     ScoreDoc[] hits = topDocs.scoreDocs;
 
-                    for (ScoreDoc scoreDoc : hits) {
-                        if (maxScore < scoreDoc.score) {
-                            maxScore = scoreDoc.score;
-                        }
-                    }
-                    String resultString;
+//                    System.out.print("s:" + hits[0].score + "\n");
 
-                    boolean comeIn = true;
-                    for (ScoreDoc scoreDoc : hits) {
-                        comeIn = false;
-                        //id[tab]tweet[tab]emotion[tab]score
-                        resultString = id + "\t" + query + "\t" + "joy" + "\t" + (maxScore == 0 ? 0 : scoreDoc.score / maxScore);
-                        scoreList.add(scoreDoc.doc);
-                        bW.write(resultString);
-                        bW.newLine();
-//                        System.out.println(resultString);
-                        System.out.print(" , " + id);
+                    //id[tab]tweet[tab]emotion[tab]score
+                    if (hits.length != 0) {
+//                        resultString = id + "\t" + query + "\t" + "joy" + "\t" + (maxScore == 0 ? 0 : hits[0].score / maxScore);
+                        scoresMap.put(id, hits[0].score);
+                    } else {
+//                        resultString = id + "\t" + query + "\t" + "joy" + "\t" + 0.0;
+                        scoresMap.put(id, 0f);
                     }
-                    if (comeIn) {
-                        resultString = id + "\t" + query + "\t" + "joy" + "\t" + 0.0;
-                        bW.write(resultString);
-                        bW.newLine();
-                    }
+                    scoreList.add(scoresMap);
                 }
+                rankList.add(scoreList);
+
+//                    bW.write(resultString);
+//                    bW.newLine();
+
+
+//                    System.out.println(resultString);
+//                    }
+//                    if (comeIn){
+//                        resultString = id + "\t" + query + "\t" + "joy" + "\t" + 0.0;
+//                        bW.write(resultString);
+//                        bW.newLine();
+//                    }
+//                    for (ScoreDoc scoreDoc : hits) {
+//                        if (maxScore < scoreDoc.score) {
+//                            maxScore = scoreDoc.score;
+//                        }
+//
                 bW.close();
             } catch (Exception e) {
                 System.out.println("Main Exception caught.\n" + e.getMessage() + "\n" + e.toString());
