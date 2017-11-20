@@ -80,7 +80,7 @@ public class AffectsProj {
 
 //                    System.out.print("s:" + hits[0].score + "\n");
 
-                    //id[tab]tweet[tab]emotion[tab]score
+
                     float hitsScore = 0f;
                     if (hits.length != 0) {
 //                        resultString = id + "\t" + query + "\t" + "joy" + "\t" + (maxScore == 0 ? 0 : hits[0].score / maxScore);
@@ -101,6 +101,7 @@ public class AffectsProj {
             }
         }
 
+        //run files creator
         int rankNum = 0;
         for (Map<String, Float> ranking : rankList) {
             try {
@@ -123,6 +124,28 @@ public class AffectsProj {
                 System.out.println("Main Exception caught.\n" + e.getMessage() + "\n" + e.toString());
             }
         }
+
+        // RankLib file creator
+        //id[tab]tweet[tab]emotion[tab]score
+        try {
+            BufferedWriter rankLibbW = new BufferedWriter(new FileWriter("./AffectsTweets/RankLib"));
+            for (int lineNum = 30000; lineNum < 31616; lineNum++) {
+                String resultString = lineNum + "\t";
+                int rankLibNum = 0;
+                for (Map<String, Float> ranking : rankList) {
+                    float score = ranking.get(Integer.toString(lineNum));
+                    score = maxScore[rankLibNum] == 0 ? 0 : score / (float) maxScore[rankLibNum];
+                    resultString = resultString + "\t" + score;
+                    rankLibNum++;
+                }
+                rankLibbW.write(resultString);
+                rankLibbW.newLine();
+            }
+            rankLibbW.close();
+        }catch (Exception e) {
+            System.out.println("Main Exception caught.\n" + e.getMessage() + "\n" + e.toString());
+        }
+
     }
 
     //parse tweets and populate correspondent structures
