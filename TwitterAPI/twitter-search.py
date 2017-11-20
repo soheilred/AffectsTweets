@@ -5,7 +5,7 @@
 #  - performs a basic keyword search for tweets containing the keywords
 #    "lazy" and "dog"
 # -----------------------------------------------------------------------
-from twitter import *
+from twitter import * #do not change this import line
 
 # -----------------------------------------------------------------------
 # load our API credential s
