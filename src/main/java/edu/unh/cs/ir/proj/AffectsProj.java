@@ -24,6 +24,7 @@ public class AffectsProj {
 //        List<Integer> scoreList = new ArrayList<>();
         tweetsParser(tIdList, tMap, "./AffectsTweets/EI-reg-en_joy_train.txt");
         List<Map<String, Float>> rankList = new ArrayList<>();
+        double maxScore[] = {0, 0, 0, 0, 0, 0};
 
 
         String[] simsName = {
@@ -56,11 +57,6 @@ public class AffectsProj {
         for (int i = 0; i < simsName.length; i++) {
 
             try {
-                // make the run file:
-                // run_file_default4
-                // run_file_custom4
-                BufferedWriter bW = new BufferedWriter(new FileWriter("./AffectsTweets/" + "runfile-affects-" + simsName[i]));
-
                 // build a lucene index to retrieve paragraphs
                 System.out.println("RebuildIndexes");
                 IndexerAff indexer = new IndexerAff();
@@ -72,12 +68,6 @@ public class AffectsProj {
                 System.out.println("--------------\nPerformSearch:");
 
                 IndexSearcherAff se = new IndexSearcherAff(simsQuery[i], simsName[i]);
-
-//                List<Map<String, Float>> scoreList = new ArrayList<>();
-
-
-                double maxScore = 0;
-                String resultString;
 
                 Map<String, Float> scoresMap = new HashMap<>();
                 for (String id : tIdList) {
@@ -98,42 +88,43 @@ public class AffectsProj {
 //                        resultString = id + "\t" + query + "\t" + "joy" + "\t" + 0.0;
                         scoresMap.put(id, 0f);
                     }
-//                    scoreList.add(scoresMap);
+                    if (maxScore[i] < hits[0].score) {
+                    maxScore[i] = hits[0].score;
+                    }
                 }
                 rankList.add(scoresMap);
 
-//                    bW.write(resultString);
-//                    bW.newLine();
-
-
-//                    System.out.println(resultString);
-//                    }
-//                    if (comeIn){
-//                        resultString = id + "\t" + query + "\t" + "joy" + "\t" + 0.0;
-//                        bW.write(resultString);
-//                        bW.newLine();
-//                    }
-//                    for (ScoreDoc scoreDoc : hits) {
-//                        if (maxScore < scoreDoc.score) {
-//                            maxScore = scoreDoc.score;
-//                        }
-//
-                bW.close();
             } catch (Exception e) {
                 System.out.println("Main Exception caught.\n" + e.getMessage() + "\n" + e.toString());
             }
         }
 
+        int rankNum = 0;
         for (Map<String, Float> ranking : rankList) {
+            try {
+                // make the run file
+                BufferedWriter bW = new BufferedWriter(new FileWriter("./AffectsTweets/" + "runfile-affects-" + simsName[rankNum]));
+
 //            for (Map.Entry<String, Float> score : ranking.entrySet()) {
 //                String key = score.getKey();
 //                Float value = score.getValue();
 //            }
-            for (int lineNum = 30000; lineNum < 31616; lineNum++) {
-                System.out.print(ranking.get(lineNum));
+                for (int lineNum = 30000; lineNum < 31616; lineNum++) {
+                    String resultString = "";
+
+//                System.out.print(ranking.get(Integer.toString(lineNum)));
+                    float score = ranking.get(Integer.toString(lineNum));
+                    resultString = lineNum + "\t" + tMap.get(lineNum) + "\t" + "joy" + "\t" + (maxScore[rankNum] == 0 ? 0 : score / maxScore[rankNum]);
+
+                    bW.write(resultString);
+                }
+                bW.newLine();
+                rankNum++;
+                bW.close();
+            } catch (Exception e) {
+                System.out.println("Main Exception caught.\n" + e.getMessage() + "\n" + e.toString());
             }
         }
-
     }
 
     //id[tab]tweet[tab]emotion[tab]score
