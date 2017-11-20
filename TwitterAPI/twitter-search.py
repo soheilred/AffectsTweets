@@ -24,7 +24,7 @@ twitter = Twitter(
 # Twitter API docs:
 # https://dev.twitter.com/rest/reference/get/search/tweets
 # -----------------------------------------------------------------------
-query = twitter.search.tweets(q="soheil", lang='en', count=1000)
+query = twitter.search.tweets(q="lazy dog", lang='en', count=1000)
 
 # -----------------------------------------------------------------------
 # How long did this query take?
