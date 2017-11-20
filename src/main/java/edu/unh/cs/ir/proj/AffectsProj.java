@@ -46,7 +46,7 @@ public class AffectsProj {
         };
         SimilarityBase[] simsQuery = {
                 new LMLaplaceSimilarity(1),
-                new LMDirichletSimilarity(1000f),
+                new LMDirichletSimilarity(0f),
                 new LMJelinekMercerSimilarity(0.9f),
                 new LTNSimilarity(),
                 new BNNSimilarity(),
