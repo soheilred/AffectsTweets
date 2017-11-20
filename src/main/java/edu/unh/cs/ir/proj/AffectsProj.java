@@ -81,15 +81,17 @@ public class AffectsProj {
 //                    System.out.print("s:" + hits[0].score + "\n");
 
                     //id[tab]tweet[tab]emotion[tab]score
+                    float hitsScore = 0f;
                     if (hits.length != 0) {
 //                        resultString = id + "\t" + query + "\t" + "joy" + "\t" + (maxScore == 0 ? 0 : hits[0].score / maxScore);
-                        scoresMap.put(id, hits[0].score);
+                        hitsScore = hits[0].score;
                     } else {
 //                        resultString = id + "\t" + query + "\t" + "joy" + "\t" + 0.0;
-                        scoresMap.put(id, 0f);
+                        hitsScore = 0f;
                     }
-                    if (maxScore[i] < hits[0].score) {
-                    maxScore[i] = hits[0].score;
+                    scoresMap.put(id, hitsScore);
+                    if (maxScore[i] < hitsScore) {
+                    maxScore[i] = hitsScore;
                     }
                 }
                 rankList.add(scoresMap);
@@ -114,11 +116,11 @@ public class AffectsProj {
 
 //                System.out.print(ranking.get(Integer.toString(lineNum)));
                     float score = ranking.get(Integer.toString(lineNum));
-                    resultString = lineNum + "\t" + tMap.get(lineNum) + "\t" + "joy" + "\t" + (maxScore[rankNum] == 0 ? 0 : score / maxScore[rankNum]);
+                    resultString = lineNum + "\t" + tMap.get(Integer.toString(lineNum)) + "\t" + "joy" + "\t" + (maxScore[rankNum] == 0 ? 0 : score / maxScore[rankNum]);
 
                     bW.write(resultString);
+                    bW.newLine();
                 }
-                bW.newLine();
                 rankNum++;
                 bW.close();
             } catch (Exception e) {
