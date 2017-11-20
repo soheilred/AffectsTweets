@@ -5,5 +5,5 @@ index-directory*/
 .idea/
 /run_file*
 *.iml
-TwitterAPI/config.py
+/TwitterAPI/config.py
 !/AffectsTweets/runfile-affects-anc-apc
