@@ -107,10 +107,6 @@ public class AffectsProj {
                 // make the run file
                 BufferedWriter bW = new BufferedWriter(new FileWriter("./AffectsTweets/" + "runfile-affects-" + simsName[rankNum]));
 
-//            for (Map.Entry<String, Float> score : ranking.entrySet()) {
-//                String key = score.getKey();
-//                Float value = score.getValue();
-//            }
                 for (int lineNum = 30000; lineNum < 31616; lineNum++) {
                     String resultString = "";
 
