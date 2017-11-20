@@ -18,9 +18,9 @@ public class AffectsProj {
 
 
     public static void main(String[] args) throws FileNotFoundException, CborException {
-        List<String> tIdList = new ArrayList<>();
-        Map<String, String> tMap = new HashMap<>();
-        int resultsNum = 1;
+        Map<String, String> tMap = new HashMap<>(); // map of Tweets
+        List<String> tIdList = new ArrayList<>(); // Tweet ID list
+        int resultsNum = 1; // number of retrieved top docs
 //        List<Integer> scoreList = new ArrayList<>();
         tweetsParser(tIdList, tMap, "./AffectsTweets/EI-reg-en_joy_train.txt");
         List<Map<String, Float>> rankList = new ArrayList<>();
@@ -129,6 +129,7 @@ public class AffectsProj {
         }
     }
 
+    //parse tweets and populate correspondent structures
     //id[tab]tweet[tab]emotion[tab]score
     private static void tweetsParser(List<String> list, Map<String, String> map, String filepath) {
         try {
