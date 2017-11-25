@@ -121,7 +121,7 @@ public class AffectsProj {
         try {
             BufferedWriter rankLibbW = new BufferedWriter(new FileWriter("./AffectsTweets/RankLib"));
             for (int lineNum = 30000; lineNum < 31616; lineNum++) {
-                String resultString = lineNum + "\t" + idQueryMap.get(Integer.toString(lineNum)) + "\t";
+                String resultString = lineNum + "\t" + idScoreMap.get(Integer.toString(lineNum));
                 int rankLibNum = 0;
                 for (Map<String, Float> ranking : rankList) {
                     float score = ranking.get(Integer.toString(lineNum));
