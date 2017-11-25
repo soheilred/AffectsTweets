@@ -18,11 +18,12 @@ public class AffectsProj {
 
 
     public static void main(String[] args) throws FileNotFoundException, CborException {
-        Map<String, Map<String, String>> tMap = new HashMap<>(); // map of Tweets
+        Map<String, String> idQueryMap = new HashMap<>(); // map of (id,Tweets)
+        Map<String, String> idScoreMap = new HashMap<>(); // map of (id,Scores)
         List<String> tIdList = new ArrayList<>(); // Tweet ID list
         int resultsNum = 1; // number of retrieved top docs
 //        List<Integer> scoreList = new ArrayList<>();
-        tweetsParser(tIdList, tMap, "./AffectsTweets/EI-reg-en_joy_train.txt");
+        tweetsParser(tIdList, idQueryMap, idScoreMap, "./AffectsTweets/EI-reg-en_joy_train.txt");
         List<Map<String, Float>> rankList = new ArrayList<>();
         double maxScore[] = {0, 0, 0};
 
@@ -61,9 +62,9 @@ public class AffectsProj {
 
                 Map<String, Float> scoresMap = new HashMap<>();
                 for (String id : tIdList) {
-                    String query = tMap.get(id);
+                    String query = idQueryMap.get(id);
 //                    System.out.println("\nThe query is: " + query);
-                    TopDocs topDocs = se.performSearch(query, resultsNum);
+                            TopDocs topDocs = se.performSearch(query, resultsNum);
 
 //                    System.out.println("Top " + resultsNum + " results found: " + topDocs.totalHits);
                     ScoreDoc[] hits = topDocs.scoreDocs;
@@ -81,7 +82,7 @@ public class AffectsProj {
                     }
                     scoresMap.put(id, hitsScore);
                     if (maxScore[i] < hitsScore) {
-                    maxScore[i] = hitsScore;
+                        maxScore[i] = hitsScore;
                     }
                 }
                 rankList.add(scoresMap);
@@ -103,7 +104,7 @@ public class AffectsProj {
 
 //                System.out.print(ranking.get(Integer.toString(lineNum)));
                     float score = ranking.get(Integer.toString(lineNum));
-                    resultString = lineNum + "\t" + tMap.get(Integer.toString(lineNum)) + "\t" + "joy" + "\t" + (maxScore[rankNum] == 0 ? 0 : score / maxScore[rankNum]);
+                    resultString = lineNum + "\t" + idQueryMap.get(Integer.toString(lineNum)) + "\t" + "joy" + "\t" + (maxScore[rankNum] == 0 ? 0 : score / maxScore[rankNum]);
 
                     bW.write(resultString);
                     bW.newLine();
@@ -120,7 +121,7 @@ public class AffectsProj {
         try {
             BufferedWriter rankLibbW = new BufferedWriter(new FileWriter("./AffectsTweets/RankLib"));
             for (int lineNum = 30000; lineNum < 31616; lineNum++) {
-                String resultString = lineNum + "\t" + tMap.get(Integer.toString(lineNum)) + "\t";
+                String resultString = lineNum + "\t" + idQueryMap.get(Integer.toString(lineNum)) + "\t";
                 int rankLibNum = 0;
                 for (Map<String, Float> ranking : rankList) {
                     float score = ranking.get(Integer.toString(lineNum));
@@ -132,7 +133,7 @@ public class AffectsProj {
                 rankLibbW.newLine();
             }
             rankLibbW.close();
-        }catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("Exception caught in RankLib file creation.\n" + e.getMessage() + "\n" + e.toString());
         }
 
@@ -140,17 +141,16 @@ public class AffectsProj {
 
     //parse tweets and populate correspondent structures
     //id[tab]tweet[tab]emotion[tab]score
-    private static void tweetsParser(List<String> list, Map<String, Map<String, String>> map, String filepath) {
+    private static void tweetsParser(List<String> list, Map<String, String> queryMap, Map<String, String> scoreMap, String filepath) {
         try {
             BufferedReader br = new BufferedReader(new FileReader(filepath));
             String line;
             String[] linesArray;
             while ((line = br.readLine()) != null) {
-                Map<String , String> textScore = new HashMap<>();
                 linesArray = line.split("\t");
                 list.add(linesArray[0]);
-                textScore.put(linesArray[1], linesArray[3]);
-                map.put(linesArray[0], textScore);
+                queryMap.put(linesArray[0], linesArray[1]);
+                scoreMap.put(linesArray[0], linesArray[3]);
             }
             br.close();
         } catch (Exception e) {

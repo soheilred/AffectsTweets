@@ -13,3 +13,5 @@ index-directory*/
 *.iml
 /TwitterAPI/config.py
 !/AffectsTweets/runfile-affects-anc-apc
+/AffectsTweets/RankLib
+TwitterAPI/twitter-1.18.0/build/bdist.macosx-10.13-intel/
