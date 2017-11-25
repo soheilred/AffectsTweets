@@ -24,33 +24,24 @@ public class AffectsProj {
 //        List<Integer> scoreList = new ArrayList<>();
         tweetsParser(tIdList, tMap, "./AffectsTweets/EI-reg-en_joy_train.txt");
         List<Map<String, Float>> rankList = new ArrayList<>();
-        double maxScore[] = {0, 0, 0, 0, 0, 0};
+        double maxScore[] = {0, 0, 0};
 
+        // "dirichlet", "lnc-ltn", "anc-apc"
 
         String[] simsName = {
                 "laplace",
-                "dirichlet",
                 "jelinekmercer",
-                "lnc-ltn",
-                "bnn-bnn",
-                "anc-apc"
-        };
+                "bnn-bnn"
+        }; // null, new LNCSimilarity(), new ANCSimilarity()
         SimilarityBase[] simsIndex = {
                 null,
                 null,
-                null,
-                new LNCSimilarity(),
-                new BNNSimilarity(),
-                new ANCSimilarity()
-
-        };
+                new BNNSimilarity()
+        }; //new LMDirichletSimilarity(0f), new LTNSimilarity(), new APCSimilarity()
         SimilarityBase[] simsQuery = {
                 new LMLaplaceSimilarity(1),
-                new LMDirichletSimilarity(0f),
                 new LMJelinekMercerSimilarity(0.9f),
-                new LTNSimilarity(),
-                new BNNSimilarity(),
-                new APCSimilarity()
+                new BNNSimilarity()
         };
 
 
@@ -64,7 +55,6 @@ public class AffectsProj {
                 System.out.println("RebuildIndexes done");
 
                 // perform search on the query
-                // and retrieve the top 100 result
                 System.out.println("--------------\nPerformSearch:");
 
                 IndexSearcherAff se = new IndexSearcherAff(simsQuery[i], simsName[i]);
@@ -97,7 +87,7 @@ public class AffectsProj {
                 rankList.add(scoresMap);
 
             } catch (Exception e) {
-                System.out.println("Main Exception caught.\n" + e.getMessage() + "\n" + e.toString());
+                System.out.println("Exception caught in lucene search.\n" + e.getMessage() + "\n" + e.toString());
             }
         }
 
@@ -121,7 +111,7 @@ public class AffectsProj {
                 rankNum++;
                 bW.close();
             } catch (Exception e) {
-                System.out.println("Main Exception caught.\n" + e.getMessage() + "\n" + e.toString());
+                System.out.println("Exception caught in run_file creation.\n" + e.getMessage() + "\n" + e.toString());
             }
         }
 
@@ -130,7 +120,7 @@ public class AffectsProj {
         try {
             BufferedWriter rankLibbW = new BufferedWriter(new FileWriter("./AffectsTweets/RankLib"));
             for (int lineNum = 30000; lineNum < 31616; lineNum++) {
-                String resultString = lineNum + "\t";
+                String resultString = lineNum + "\t" + tMap.get(Integer.toString(lineNum)) + "\t";
                 int rankLibNum = 0;
                 for (Map<String, Float> ranking : rankList) {
                     float score = ranking.get(Integer.toString(lineNum));
@@ -143,19 +133,20 @@ public class AffectsProj {
             }
             rankLibbW.close();
         }catch (Exception e) {
-            System.out.println("Main Exception caught.\n" + e.getMessage() + "\n" + e.toString());
+            System.out.println("Exception caught in RankLib file creation.\n" + e.getMessage() + "\n" + e.toString());
         }
 
     }
 
     //parse tweets and populate correspondent structures
     //id[tab]tweet[tab]emotion[tab]score
-    private static void tweetsParser(List<String> list, Map<String, String> map, String filepath) {
+    private static void tweetsParser(List<String> list, Map<String, Map<String, Float>> map, String filepath) {
         try {
             BufferedReader br = new BufferedReader(new FileReader(filepath));
             String line;
             String[] linesArray;
             while ((line = br.readLine()) != null) {
+                Map<String , Float> textScore = Map
                 linesArray = line.split("\t");
                 list.add(linesArray[0]);
                 map.put(linesArray[0], linesArray[1]);
