@@ -97,7 +97,7 @@ public class Assignment5 {
             int ranknum = 0;
             for (List<Map<String, Map<String, Integer>>> diffRanks : rankLists){
                 for (Map<String, Map<String, Integer>> line : rankLists.get(ranknum)){
-                    
+
                 }
                 ranknum++;
             }

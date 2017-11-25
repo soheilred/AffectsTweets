@@ -2,6 +2,12 @@
 .DS_Store
 target/
 index-directory*/
+/AffectsTweets/runfile-affects-anc-apc
+/AffectsTweets/runfile-affects-bnn-bnn
+/AffectsTweets/runfile-affects-lnc-ltn
+/AffectsTweets/runfile-affects-laplace
+/AffectsTweets/runfile-affects-jelinekmercer
+/AffectsTweets/runfile-affects-dirichlet
 .idea/
 /run_file*
 *.iml
