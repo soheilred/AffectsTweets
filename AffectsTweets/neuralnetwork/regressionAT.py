@@ -4,14 +4,13 @@ import matplotlib.pyplot as plt
 
 # ########################################
 # Reading feature vectors
-features = np.matrix([])
+features = np.matrix([0.0 , 0.0 , 0.0])
 input = file('RankLib', 'r')
 lines = input.readlines()
 input.close()
 for line in lines:
-	variablesArray = line.split('\t')
-	# features = np.append(features, [[ variablesArray[2] , variablesArray[3] , variablesArray[4] ]], axis = 0)
-	print variablesArray[2]
+	variablesArray = map(float , line.split('\t'))
+	features = np.append(features, [[ variablesArray[2] , variablesArray[3] , variablesArray[4] ]], axis = 0)
 print features
 
 # #############################################################################
