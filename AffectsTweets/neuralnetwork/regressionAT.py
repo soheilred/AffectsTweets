@@ -9,15 +9,15 @@ input = file('RankLib', 'r')
 lines = input.readlines()
 input.close()
 for line in lines:
-	variablesArray = line.split('\t')
-	# features = np.append(features, [[ variablesArray[2] , variablesArray[3] , variablesArray[4] ]], axis = 0)
-	print variablesArray[2]
+    variablesArray = line.split('\t')
+    features = np.append(features, [[variablesArray[2], variablesArray[3], variablesArray[4]]], axis=0)
+    print variablesArray[2]
 print features
 
 # #############################################################################
 # Generate sample data
 X = np.sort(5 * np.random.rand(40, 1), axis=0)
-y = np.sin(X).ravel()
+y = np.sin(features).ravel()
 
 # #############################################################################
 # Add noise to targets

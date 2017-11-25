@@ -22,7 +22,6 @@ import sys
 import scipy.stats
 
 
-
 def evaluate(pred,gold):
     
     f=open(pred, "rb")
