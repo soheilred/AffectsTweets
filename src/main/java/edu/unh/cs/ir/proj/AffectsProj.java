@@ -18,7 +18,7 @@ public class AffectsProj {
 
 
     public static void main(String[] args) throws FileNotFoundException, CborException {
-        Map<String, String> tMap = new HashMap<>(); // map of Tweets
+        Map<String, Map<String, String>> tMap = new HashMap<>(); // map of Tweets
         List<String> tIdList = new ArrayList<>(); // Tweet ID list
         int resultsNum = 1; // number of retrieved top docs
 //        List<Integer> scoreList = new ArrayList<>();
@@ -140,16 +140,17 @@ public class AffectsProj {
 
     //parse tweets and populate correspondent structures
     //id[tab]tweet[tab]emotion[tab]score
-    private static void tweetsParser(List<String> list, Map<String, Map<String, Float>> map, String filepath) {
+    private static void tweetsParser(List<String> list, Map<String, Map<String, String>> map, String filepath) {
         try {
             BufferedReader br = new BufferedReader(new FileReader(filepath));
             String line;
             String[] linesArray;
             while ((line = br.readLine()) != null) {
-                Map<String , Float> textScore = Map
+                Map<String , String> textScore = new HashMap<>();
                 linesArray = line.split("\t");
                 list.add(linesArray[0]);
-                map.put(linesArray[0], linesArray[1]);
+                textScore.put(linesArray[1], linesArray[3]);
+                map.put(linesArray[0], textScore);
             }
             br.close();
         } catch (Exception e) {
