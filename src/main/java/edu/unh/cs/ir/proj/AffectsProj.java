@@ -16,6 +16,8 @@ import java.util.Map;
 
 public class AffectsProj {
 
+    static boolean debug = true; //switch for printing debug info.
+
 
     public static void main(String[] args) throws FileNotFoundException, CborException {
         Map<String, String> idQueryMap = new HashMap<>(); // map of (id,Tweets)
@@ -40,7 +42,7 @@ public class AffectsProj {
                 new BNNSimilarity()
         }; //new LMDirichletSimilarity(0f), new LTNSimilarity(), new APCSimilarity()
         SimilarityBase[] simsQuery = {
-                new LMLaplaceSimilarity(1),
+                new LMLaplaceSimilarity(1, debug),
                 new LMJelinekMercerSimilarity(0.9f),
                 new BNNSimilarity()
         };
@@ -64,7 +66,7 @@ public class AffectsProj {
                 for (String id : tIdList) {
                     String query = idQueryMap.get(id);
 //                    System.out.println("\nThe query is: " + query);
-                            TopDocs topDocs = se.performSearch(query, resultsNum);
+                    TopDocs topDocs = se.performSearch(query, resultsNum);
 
 //                    System.out.println("Top " + resultsNum + " results found: " + topDocs.totalHits);
                     ScoreDoc[] hits = topDocs.scoreDocs;
@@ -126,7 +128,8 @@ public class AffectsProj {
                 for (Map<String, Float> ranking : rankList) {
                     float score = ranking.get(Integer.toString(lineNum));
                     score = maxScore[rankLibNum] == 0 ? 0 : score / (float) maxScore[rankLibNum];
-                    resultString = resultString + "\t" + score;
+                    String scoreStr = String.format("%.2f", score);
+                    resultString = resultString + "\t" + scoreStr;
                     rankLibNum++;
                 }
                 rankLibbW.write(resultString);

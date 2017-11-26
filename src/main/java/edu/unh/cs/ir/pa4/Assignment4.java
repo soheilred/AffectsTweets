@@ -52,7 +52,7 @@ public class Assignment4 {
 
             //new LMDirichletSimilarity(1000f)
             //new LMJelinekMercerSimilarity(0.9f)
-            IndexSearcher4 se = new IndexSearcher4(new LMLaplaceSimilarity(1)); //
+            IndexSearcher4 se = new IndexSearcher4(new LMLaplaceSimilarity(1, false)); //
 
             for (Data.Page page : DeserializeData.iterableAnnotations(FISOutlines)) {
                 // Index all Accommodation entries
