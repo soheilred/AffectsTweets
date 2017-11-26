@@ -16,6 +16,8 @@ import java.util.Map;
 
 public class AffectsProj {
 
+    static boolean debug = true; //switch for printing debug info.
+
 
     public static void main(String[] args) throws FileNotFoundException, CborException {
         Map<String, String> idQueryMap = new HashMap<>(); // map of (id,Tweets)
@@ -40,7 +42,7 @@ public class AffectsProj {
                 new BNNSimilarity()
         }; //new LMDirichletSimilarity(0f), new LTNSimilarity(), new APCSimilarity()
         SimilarityBase[] simsQuery = {
-                new LMLaplaceSimilarity(1),
+                new LMLaplaceSimilarity(1, debug),
                 new LMJelinekMercerSimilarity(0.9f),
                 new BNNSimilarity()
         };
