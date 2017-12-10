@@ -8,14 +8,14 @@
 
 ### Installation
 
-#### Build with maven
+#### 1.Build with maven
 Change the current directory to `AffectsTweets` then:
 ```
 mvn package
 ```
 two `jar` files will be created in `target` directory.
 
-#### Run the jar file
+#### 2.Run the jar file
  Run the jar files with the following command:
 ```
 java -jar target/AffectsProj-3.1.4-jar-with-dependencies.jar
