@@ -1,11 +1,12 @@
+package proj;
 
 import co.nstant.in.cbor.CborException;
-import edu.unh.cs.ir.similarities.*;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
-import org.apache.lucene.search.similarities.LMDirichletSimilarity;
 import org.apache.lucene.search.similarities.LMJelinekMercerSimilarity;
 import org.apache.lucene.search.similarities.SimilarityBase;
+import similarities.BNNSimilarity;
+import similarities.LMLaplaceSimilarity;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ public class AffectsProj {
         List<String> tIdList = new ArrayList<>(); // Tweet ID list
         int resultsNum = 1; // number of retrieved top docs
 //        List<Integer> scoreList = new ArrayList<>();
-        tweetsParser(tIdList, idQueryMap, idScoreMap, "./AffectsTweets/EI-reg-en_joy_train.txt");
+        tweetsParser(tIdList, idQueryMap, idScoreMap, "./EI-reg-en_joy_train.txt");
         List<Map<String, Float>> rankList = new ArrayList<>();
         double maxScore[] = {0, 0, 0};
 
@@ -53,7 +54,7 @@ public class AffectsProj {
                 // build a lucene index to retrieve paragraphs
                 System.out.println("RebuildIndexes");
                 IndexerAff indexer = new IndexerAff();
-                indexer.buildIndexes("./AffectsTweets/joy_database", simsIndex[i], simsName[i]); //pass the specific similarity to indexer
+                indexer.buildIndexes("./joy_database", simsIndex[i], simsName[i]); //pass the specific similarity to indexer
                 System.out.println("RebuildIndexes done");
 
                 // perform search on the query
@@ -98,7 +99,7 @@ public class AffectsProj {
         for (Map<String, Float> ranking : rankList) {
             try {
                 // make the run file
-                BufferedWriter bW = new BufferedWriter(new FileWriter("./AffectsTweets/" + "runfile-affects-" + simsName[rankNum]));
+                BufferedWriter bW = new BufferedWriter(new FileWriter("./" + "runfile-affects-" + simsName[rankNum]));
 
                 for (int lineNum = 30000; lineNum < 31616; lineNum++) {
                     String resultString = "";
@@ -120,7 +121,7 @@ public class AffectsProj {
         // RankLib file creator
         //id[tab]tweet[tab]emotion[tab]score
         try {
-            BufferedWriter rankLibbW = new BufferedWriter(new FileWriter("./AffectsTweets/RankLib"));
+            BufferedWriter rankLibbW = new BufferedWriter(new FileWriter("./RankLib"));
             for (int lineNum = 30000; lineNum < 31616; lineNum++) {
                 String resultString = lineNum + "\t" + idScoreMap.get(Integer.toString(lineNum));
                 int rankLibNum = 0;

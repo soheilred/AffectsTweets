@@ -1,7 +1,6 @@
+package proj;
 
 import co.nstant.in.cbor.CborException;
-import edu.unh.cs.treccar.Data;
-import edu.unh.cs.treccar.read_data.DeserializeData;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -15,7 +14,6 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
