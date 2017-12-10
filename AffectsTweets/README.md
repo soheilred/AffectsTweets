@@ -7,7 +7,6 @@
 * Maven
 
 ### Installation
-You have two options:
 
 #### Build with maven
 Change the current directory to `AffectsTweets` then:
