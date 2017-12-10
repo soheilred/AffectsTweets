@@ -23,18 +23,10 @@ java -jar target/AffectsProj-3.1.4-jar-with-dependencies.jar
 ```
 \_________________ 
 
-### Evaluation:
-
-**usage**:
-
-You should replace `SIMILARITY` with your desired similarity name.
- ```
- python evaluate.py 1 runfile-affects-SIMILARITY EI-reg-en_joy_train.txt
-
-```
 
 \_________________ 
 ##### SVM:
+Requirements: numpy, sklearn
 Change the current directory to SVM folder.
 Modify file RankLib; this file contains the features scores obtained from different tf-idfs and run the command:
 $ python regressionAT.py
