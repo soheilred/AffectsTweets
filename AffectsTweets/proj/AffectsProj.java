@@ -1,4 +1,3 @@
-package edu.unh.cs.ir.proj;
 
 import co.nstant.in.cbor.CborException;
 import edu.unh.cs.ir.similarities.*;
@@ -16,7 +15,7 @@ import java.util.Map;
 
 public class AffectsProj {
 
-    static boolean debug = true; //switch for printing debug info.
+    static boolean debug = false; //switch for printing debug info.
 
 
     public static void main(String[] args) throws FileNotFoundException, CborException {

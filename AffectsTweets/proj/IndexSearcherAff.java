@@ -1,4 +1,3 @@
-package edu.unh.cs.ir.proj;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;

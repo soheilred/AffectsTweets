@@ -1,4 +1,3 @@
-package edu.unh.cs.ir.proj;
 
 import co.nstant.in.cbor.CborException;
 import edu.unh.cs.treccar.Data;
