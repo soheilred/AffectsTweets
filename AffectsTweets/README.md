@@ -23,7 +23,10 @@ java -jar target/AffectsProj-3.1.4-jar-with-dependencies.jar
 ```
 \_________________ 
 ### Evaluation:
-#### Requirements numpy, scipy
+**Requirements**
+* numpy
+* scipy
+
 **usage**:
 
 You should replace `SIMILARITY` with your desired similarity name (e.g. `jelinekmercer`).
@@ -39,7 +42,9 @@ You should replace `SIMILARITY` with your desired similarity name (e.g. `jelinek
 
 \_________________ 
 ##### SVM:
-**Requirements**: numpy, sklearn
+**Requirements**
+* numpy
+* sklearn
 
 **usage**:
 
