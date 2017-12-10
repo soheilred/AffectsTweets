@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>edu.unh.cs.ir</groupId>
-    <artifactId>InfoRet</artifactId>
-    <version>1.1.3</version>
+    <groupId>proj</groupId>
+    <artifactId>AffectsProj</artifactId>
+    <version>3.1.4</version>
 
     <dependencies>
         <dependency>
@@ -55,7 +55,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>edu.unh.cs.ir.pa5.Assignment5</mainClass>
+                            <mainClass>proj.AffectsProj</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
