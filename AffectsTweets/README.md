@@ -40,6 +40,8 @@ You should replace `SIMILARITY` with your desired similarity name (e.g. `jelinek
 \_________________ 
 ##### SVM:
 **Requirements**: numpy, sklearn
+**usage**:
+
 Change the current directory to SVM folder.
 Modify file RankLib; this file contains the features scores obtained from different tf-idfs and run the command:
 $ python regressionAT.py
