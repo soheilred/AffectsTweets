@@ -40,6 +40,7 @@ You should replace `SIMILARITY` with your desired similarity name (e.g. `jelinek
 \_________________ 
 ##### SVM:
 **Requirements**: numpy, sklearn
+
 **usage**:
 
 Change the current directory to SVM folder.
