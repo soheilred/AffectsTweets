@@ -26,9 +26,14 @@ java -jar target/AffectsProj-3.1.4-jar-with-dependencies.jar
 **Requirements**: numpy, scipy
 **usage**:
 
-You should replace `SIMILARITY` with your desired similarity name.
+You should replace `SIMILARITY` with your desired similarity name (e.g. `jelinekmercer`).
  ```
  python evaluate.py 1 runfile-affects-SIMILARITY EI-reg-en_joy_train.txt
+
+```
+**example:**
+```
+ python evaluate.py 1 runfile-affects-jelinekmercer EI-reg-en_joy_train.txt
 
 ```
 
