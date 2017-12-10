@@ -23,6 +23,15 @@ java -jar target/AffectsProj-3.1.4-jar-with-dependencies.jar
 ```
 \_________________ 
 
+### Evaluation:
+
+**usage**:
+
+You should replace `SIMILARITY` with your desired similarity name.
+ ```
+ python evaluate.py 1 runfile-affects-SIMILARITY EI-reg-en_joy_train.txt
+
+```
 
 \_________________ 
 ##### SVM:
