@@ -1,5 +1,5 @@
-# InfoRet
-#### Project repo for CS825 Team 3 ####
+# Affects Tweets
+#s
 
 ### Requirements
 * Java 1.8+
