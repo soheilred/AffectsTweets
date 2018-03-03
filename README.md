@@ -1,5 +1,7 @@
 # Affects Tweets
-#s
+
+A data mining approach to evaluate Twitter's tweets emotion. This project uses different APIs and open-source code snippets. 
+
 
 ### Requirements
 * Java 1.8+
